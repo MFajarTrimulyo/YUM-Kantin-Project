@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Initialize Sliders (jika ada di halaman)
-    setupSlider('discount-slider', 'scroll-left', 'scroll-right');
+    setupSlider('discount-slider', 'discount-scroll-left', 'discount-scroll-right');
     setupSlider('popular-slider', 'popular-scroll-left', 'popular-scroll-right');
 
 
