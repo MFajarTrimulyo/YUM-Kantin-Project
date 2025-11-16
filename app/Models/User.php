@@ -6,11 +6,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Traits\HasCustomId;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    use HasCustomId; // Custom ID Trait
+
+    public $incrementing = false;
+    protected $keyType = 'char';
+
+    public function getCustomIdPrefix(): string
+    {
+        return 'USR';
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +32,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'alamat',
+        'no_telp',
+        'role',
     ];
 
     /**
@@ -44,5 +58,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Penjual bisa memiliki 1 Gerai
+    public function gerai() {
+        return $this->hasOne(Gerai::class, 'fk_user');
+    }
+
+    // Pembeli bisa melakukan banyak Pemesanan
+    public function pemesanans() {
+        return $this->hasMany(Pemesanan::class, 'fk_user');
     }
 }
