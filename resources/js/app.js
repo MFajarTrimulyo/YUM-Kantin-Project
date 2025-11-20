@@ -1,7 +1,8 @@
 import './bootstrap';
-import DataTable from 'datatables.net-dt';
 
 import $ from 'jquery';
+import Swal from 'sweetalert2';
+// import DataTable from 'datatables.net-dt';
 window.$ = window.jQuery = $;
 
 
@@ -92,14 +93,110 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 5. SCROLL TO SEARCH FOOD
+    // 5. SCROLL TO SEARCH (Tombol "DISINI!")
     // ==========================================
-    const buttonHere = document.getElementById('here-button');
-    const searchFoodDiv = document.getElementById('search-food');
+    const hereButton = document.getElementById('here-button');
+    const searchSection = document.getElementById('search-food');
 
-    buttonHere.addEventListener('click', function() {
-        searchFoodDiv.scrollIntoView({
-            behavior: 'smooth'
+    if (hereButton && searchSection) {
+        hereButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            searchSection.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
         });
+    }
+
+
+    // ==========================================
+    // 6. LOAD MORE PRODUCTS (Menu Page)
+    // ==========================================
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+            let btn = this;
+            
+            // Ambil data dari atribut HTML
+            let page = btn.getAttribute('data-page');
+            let url = btn.getAttribute('data-url');
+            let category = btn.getAttribute('data-category') || '';
+            let search = btn.getAttribute('data-search') || '';
+
+            let container = document.getElementById('product-container');
+            let spinner = document.getElementById('loading-spinner');
+            let label = btn.querySelector('span');
+            
+            // UI Loading State
+            btn.disabled = true;
+            label.textContent = 'Memuat...';
+            if(spinner) spinner.classList.remove('hidden');
+
+            // Buat URL lengkap
+            let fetchUrl = `${url}?page=${page}&category=${category}&search=${search}`;
+
+            // Request AJAX
+            fetch(fetchUrl, {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Tambahkan kartu produk baru
+                container.insertAdjacentHTML('beforeend', data.html);
+                
+                // Cek apakah masih ada halaman berikutnya
+                if (data.next_page) {
+                    btn.setAttribute('data-page', data.next_page);
+                    btn.disabled = false;
+                    label.textContent = 'Muat Lebih Banyak';
+                    if(spinner) spinner.classList.add('hidden');
+                } else {
+                    // Hapus tombol jika data habis
+                    const btnContainer = document.getElementById('load-more-container');
+                    if(btnContainer) btnContainer.remove();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                btn.disabled = false;
+                label.textContent = 'Coba Lagi';
+                if(spinner) spinner.classList.add('hidden');
+            });
+        });
+    }
+
+    // ==========================================
+    // 3. SWEETALERT
+    // ==========================================
+    const successMessage = $('body').data('success-message');
+    const errorMessage = $('body').data('error-message');
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
     });
+
+    if (successMessage) {
+        Toast.fire({
+            icon: 'success',
+            title: successMessage
+        });
+    }
+
+    if (errorMessage) {
+        Toast.fire({
+            icon: 'error',
+            title: errorMessage
+        });
+    }
 });

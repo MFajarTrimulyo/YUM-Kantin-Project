@@ -12,7 +12,8 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        $kategoris = Kategori::paginate(5);
+        return view('admin_page.data_kategoris.index', compact('kategoris'));
     }
 
     /**
@@ -20,7 +21,7 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin_page.data_kategoris.create');
     }
 
     /**
@@ -28,38 +29,52 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'nama' => 'required|string|max:255|unique:kategoris,nama',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kategori $kategori)
-    {
-        //
+        Kategori::create([
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->route('kategoris.index')
+            ->with('success', 'Kategori berhasil ditambahkan!');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kategori $kategori)
+    public function edit($id)
     {
-        //
+        $kategori = Kategori::findOrFail($id); 
+        return view('admin_page.data_kategoris.edit', compact('kategori'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kategori $kategori)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string|max:255|unique:kategoris,nama,'. $id,
+        ]);
+
+        $kategori = Kategori::findOrFail($id);
+        $kategori->update([
+            'nama' => $request->nama
+        ]);
+
+        return redirect()->route('kategoris.index')->with('success', 'Kategori berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Kategori $kategori)
+    public function destroy($id)
     {
-        //
+        $kategori = Kategori::findOrFail($id);
+        $kategori->delete();
+        
+        return redirect()->route('kategoris.index')->with('success', 'Kategori berhasil dihapus');
     }
 }

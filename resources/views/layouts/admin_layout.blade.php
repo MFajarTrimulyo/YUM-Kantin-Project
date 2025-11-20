@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - YUM</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="font-sans bg-gray-50 text-gray-800 antialiased"
+        data-success-message="{{ session('success') }}"
+        data-error-message="{{ session('error') }}">
+
+    <div class="flex h-screen overflow-hidden">
+        <!-- SIDEBAR -->
+        <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col z-10">
+            
+            <!-- Logo Area -->
+            <div class="h-16 flex items-center justify-center border-b border-gray-100">
+                <a href="/" class="text-3xl select-none font-bold">
+                    <span class="font-fredoka text-yum-primary">Y</span><span class="font-fredoka text-yum-yellow">U</span><span class="font-fredoka text-black">M</span>
+                    <span class="text-xs text-gray-400 font-normal ml-1 tracking-wider">ADMIN</span>
+                </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <ul class="space-y-1 px-3">
+                    
+                    <!-- Dashboard (Active State Example) -->
+                    <li>
+                        <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3
+                        {{ request()->routeIs('dashboard') 
+                        ? 'bg-yum-primary/10 text-yum-primary font-bold' 
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-yum-primary font-medium'}} rounded-lg transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <!-- Kelola Jenis Menu -->
+                    <li>
+                        <a href="{{ route('kategoris.index') }}" class="flex items-center px-4 py-3 
+                        {{ request()->routeIs('kategoris.index') 
+                        ? 'bg-yum-primary/10 text-yum-primary font-bold' 
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-yum-primary font-medium'}} rounded-lg transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                            Kelola Kategori Menu
+                        </a>
+                    </li>
+
+                    <!-- Kelola Menu -->
+                    <li>
+                        <a href="{{-- route('produks.index') --}}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yum-primary rounded-lg font-medium transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                            Kelola Menu
+                        </a>
+                    </li>
+
+                    <!-- Pesanan Masuk -->
+                    <li>
+                        <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yum-primary rounded-lg font-medium transition-colors justify-between">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                Pesanan
+                            </div>
+                            <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3</span>
+                        </a>
+                    </li>
+
+                    <!-- Laporan -->
+                    <li>
+                        <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yum-primary rounded-lg font-medium transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path></svg>
+                            Laporan
+                        </a>
+                    </li>
+
+                    <!-- Users -->
+                    <li>
+                        <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yum-primary rounded-lg font-medium transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            Data User
+                        </a>
+                    </li>
+                    
+                    <!-- Kantin -->
+                    <li>
+                        <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yum-primary rounded-lg font-medium transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                            Data Kantin
+                        </a>
+                    </li>
+
+                    <!-- Gerai -->
+                    <li>
+                        <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yum-primary rounded-lg font-medium transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                            Data Gerai
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Logout Area -->
+            <div class="p-4 border-t border-gray-100">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full flex items-center px-4 py-2 text-red-500 hover:bg-red-50 rounded-lg font-medium transition-colors">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            
+            <!-- Top Header -->
+            <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 md:px-8">
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-gray-500 hover:text-yum-primary">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+
+                <!-- Page Title (Dynamic) -->
+                <h2 class="text-xl font-bold text-gray-800 hidden md:block">@yield('title', 'Dashboard')</h2>
+
+                <!-- Right Side: User Profile -->
+                <div class="flex items-center space-x-4">
+                    <div class="text-right hidden md:block">
+                        <div class="text-sm font-bold text-gray-800">{{ Auth::check() ? Auth::user()->nama : 'Admin' }}</div>
+                        <div class="text-xs text-gray-500">Super Admin</div>
+                    </div>
+                    <div class="h-10 w-10 rounded-full bg-yum-primary/10 flex items-center justify-center text-yum-primary font-bold text-lg">
+                        {{ Auth::check() ? substr(Auth::user()->nama, 0, 1) : 'A' }}
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Scrollable -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6 md:p-8">
+                @yield('content')
+            </main>
+            
+        </div>
+    </div>
+</body>
+</html>
