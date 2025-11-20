@@ -5,10 +5,22 @@
     
     <div class="container mx-auto  px-6 flex flex-col md:flex-row justify-between items-center relative z-10">
         <div class="text-white max-w-lg text-center md:text-left">
-            <h1 class="text-5xl font-bold mb-2 tracking-tight">HAI! <span class="text-white">{{ auth()->user()->nama }}</span></h1>
-            <p class="text-xl mb-6 font-light leading-relaxed">
-                LAGI CARI MAKAN NIH?<br>
-                CARI MENU FAVORITMU <span id="here-button" onclick="searchFood()" class="border-2 border-white text-white text-md px-2 py-0.5 ml-2 rounded font-medium">DISINI!</span>
+            <h1 class="text-5xl font-bold mb-2 tracking-tight">
+                HAI!
+                @if (Auth::check())
+                    <span class="text-yum-yellow">{{ auth()->user()->nama }}</span>
+                @else
+                    SOBAT!
+                @endif
+            </h1>
+            
+            <p class="text-xl mb-6 font-light leading-relaxed text-white/90">
+                LAPER TAPI BINGUNG MAU MAKAN APA?<br>
+                TEMUKAN MENU FAVORITMU
+                <button id="here-button"
+                    class="ml-1 border-2 border-white text-white hover:bg-yum-primary hover:border-yum-primary hover:text-white transition-all duration-300 text-md px-3 rounded-lg font-bold">
+                    DISINI!
+                </button>
             </p>
         </div>
         <div class="hidden md:block w-1/3">
@@ -100,8 +112,7 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
             </button>
 
-            <div id="popular-slider" class="flex overflow-x-auto space-x-6 pb-4 snap-x snap-mandatory scroll-smooth no-scrollbar">
-                
+            <div id="popular-slider" class="flex overflow-x-auto space-x-4 pb-4 snap-x snap-mandatory scroll-smooth no-scrollbar">
                 @for ($i = 0; $i < 8; $i++) <div class="snap-start shrink-0 w-48 md:w-52">
                     <div class="bg-white rounded-xl p-3 border border-gray-200 hover:border-yum-primary transition duration-300 group h-full flex flex-col">
                         
@@ -126,4 +137,16 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('footer-feedback')
+    <h2 class="text-white text-2xl font-bold mb-8 relative z-10">Berikan <span class="text-yum-yellow">ulasanmu</span> disini!</h2>
+            
+    <div class="max-w-2xl mx-auto px-6 relative z-10">
+        <div class="flex gap-3 mb-4">
+            <input type="email" placeholder="Masukkan email kamu" class="flex-1 rounded-lg px-5 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-yum-yellow border-none shadow-lg text-sm">
+            <button class="bg-yum-yellow text-black font-bold px-8 py-3 rounded-lg hover:bg-yellow-300 shadow-lg transition transform hover:-translate-y-0.5">Kirim</button>
+        </div>
+        <textarea class="w-full rounded-lg px-5 py-4 h-32 bg-white focus:outline-none focus:ring-2 focus:ring-yum-yellow border-none shadow-lg text-sm resize-none" placeholder="Tulis kritik dan saran disini..."></textarea>
+    </div>
 @endsection
