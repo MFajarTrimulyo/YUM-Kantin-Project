@@ -159,6 +159,20 @@
                 </ul>
             </div>
 
+            {{-- 1. Ambil Data Admin di bagian atas --}}
+            @php
+                $adminContact = \App\Models\User::where('role', 'admin')->first();
+                
+                // Default value jika admin belum ada/dihapus
+                $phone = optional($adminContact)->no_hp ?? '-'; 
+                $email = optional($adminContact)->email ?? '-';
+
+                // Format Nomor untuk Link WhatsApp
+                $waLink = preg_replace('/[^0-9]/', '', $phone);
+                if (substr($waLink, 0, 1) == '0') {
+                    $waLink = '62' . substr($waLink, 1);
+                } 
+            @endphp
             <div class="md:col-span-2">
                 <h3 class="text-lg font-bold mb-4 text-yum-yellow">Kontak Kami</h3>
                 <ul class="space-y-3 text-white/80">
@@ -168,11 +182,13 @@
                     </li>
                     <li class="flex items-center justify-center md:justify-start">
                         <svg class="w-5 h-5 mr-2 text-yum-yellow shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        <span>muhammad.fajar.2405336@students.um.ac.id</span>
+                        <span>{{ $email }}</span>
                     </li>
                     <li class="flex items-center justify-center md:justify-start">
                         <svg class="w-5 h-5 mr-2 text-yum-yellow shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                        <span>+62 881-0363-35536</span>
+                        <a href="https://wa.me/{{ $waLink }}" target="_blank" class="hover:text-yum-yellow transition">
+                            <span>{{ $phone }}</span>
+                        </a>
                     </li>
                 </ul>
             </div>

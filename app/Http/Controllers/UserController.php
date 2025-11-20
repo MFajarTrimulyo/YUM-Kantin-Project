@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -11,7 +12,25 @@ class UserController extends Controller
 {
     public function home()
     {
-        return view('home');
+        // 1. Promo Products (Price Discount > 0)
+        $promoProduks = Produk::with('gerai')
+                        ->where('harga_diskon', '>', 0)
+                        ->where('stok', '>', 0)
+                        ->latest()
+                        ->take(8)
+                        ->get();
+
+        // 2. Popular/Latest Products (Fallback to latest for now)
+        $popularProduks = Produk::with('gerai')
+                        ->where('stok', '>', 0)
+                        ->inRandomOrder()
+                        ->take(8)
+                        ->get();
+
+        return view('home', [
+            'promoProduks' => $promoProduks,
+            'popularProduks' => $popularProduks,
+        ]);
     }
 
     public function edit_profile()
@@ -65,6 +84,7 @@ class UserController extends Controller
         return redirect()->route('profile.edit', ['username' => $user->username])->with('success', 'Profil berhasil diperbarui.');
     }
 
+    // Jadi Penjual
     public function jadi_penjual(Request $request)
     {
         $user = auth()->user();
@@ -74,64 +94,31 @@ class UserController extends Controller
         return redirect()->route('gerai.create', ['username' => $user->username])->with('success', 'Anda sekarang telah menjadi penjual.');
     }
 
+    // Menu Page with Filters and AJAX Load More
     public function menu(Request $request)
     {
-        // Simulasi Pencarian
-        $search = $request->input('search');
-        $category = $request->input('category');
+        $query = Produk::with(['gerai', 'kategori'])->where('stok', '>', 0);
 
-        // $products = Produk::with('gerai', 'kategori')
-        //     ->where(function ($query) use ($search, $category) {
-        //         if ($search) {
-        //             $query->where('nama', 'like', '%' . $search . '%');
-        //         }
-        //         if ($category) {
-        //             $query->whereHas('kategori', function ($q) use ($category) {
-        //                 $q->where('nama', $category);
-        //             });
-        //         }
-        //     })
-        //     ->paginate(12);
-
-        // Data Dummy untuk Tampilan
-        $products = collect([]);
-        for ($i = 1; $i <= 12; $i++) {
-            $products->push((object)[
-                'id' => $i,
-                'name' => 'Takoyaki Spesial Lezat ' . $i,
-                'store_name' => 'Toko Toko',
-                'category' => 'Makanan',
-                'price' => 10000,
-                'original_price' => 15000,
-                'sold' => 100 + $i,
-                'image' => 'pictures/example-food.png'
-            ]);
+        // Filter Search
+        if ($request->has('search') && $request->search != null) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
         }
 
-        // Jika menggunakan Database asli, gunakan ->paginate(12);
-        // Disini kita pakai manual paginator untuk array dummy
-        $perPage = 8;
-        $page = request()->get('page', 1);
-        $paginatedProducts = new LengthAwarePaginator(
-            $products->forPage($page, $perPage),
-            $products->count(),
-            $perPage,
-            $page,
-            ['path' => request()->url(), 'query' => request()->query()]
-        );
+        // Filter Category
+        if ($request->has('category') && $request->category != 'Semua') {
+            $query->whereHas('kategori', function($q) use ($request) {
+                $q->where('nama', $request->category);
+            });
+        }
 
+        $products = $query->latest()->paginate(8);
+        $kategoris = Kategori::all();
+
+        // Handle AJAX Load More
         if ($request->ajax()) {
-            $view = view('user_page.menu.product-list', ['products' => $paginatedProducts])->render();
-            return response()->json([
-                'html' => $view,
-                'next_page' => $paginatedProducts->nextPageUrl() ? $page + 1 : null
-            ]);
+            return view('user_page.menu.product-list', compact('products'))->render();
         }
 
-        return view('user_page.menu.index', [
-            'products' => $paginatedProducts,
-            'search' => $search,
-            'currentCategory' => $category ?? 'Semua'
-        ]);
+        return view('user_page.menu.index', compact('products', 'kategoris'));
     }
 }
