@@ -80,10 +80,25 @@
                         <a href="{{ route('profile.edit', ['username' => Auth::user()->username]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
                             My Profile
                         </a>
+                        
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
                             Order History
                         </a>
-                        
+
+                        <hr class="text-gray-300">
+
+                        {{-- ADMIN & GERAI PAGE --}}
+                        @if (auth()->user()->role == 'penjual')
+                            <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
+                                Kelola Gerai
+                            </a>
+                        @elseif (auth()->user()->role == 'admin')
+                            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
+                                Kelola Admin
+                            </a>
+                        @endif
+
+                        {{-- LOGOUT --}}
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:font-bold" role="menuitem">
