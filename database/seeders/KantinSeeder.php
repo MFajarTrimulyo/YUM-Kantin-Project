@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Kantin;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class KantinSeeder extends Seeder
 {
@@ -13,24 +14,24 @@ class KantinSeeder extends Seeder
      */
     public function run(): void
     {
-        Kantin::create([
+        DB::table('kantins')->insert([
             [
-                'nama' => 'Kantin FIP',
+                'nama' => 'Kantin FIP'
             ],
             [
-                'nama' => 'Kantin FMIPA',
+                'nama' => 'Kantin FMIPA'
             ],
             [
-                'nama' => 'Kantin FS',
+                'nama' => 'Kantin FS'
             ],
             [
-                'nama' => 'Kantin FEB',
+                'nama' => 'Kantin FEB'
             ],
             [
-                'nama' => 'Kantin FIS',
+                'nama' => 'Kantin FIS'
             ],
             [
-                'nama' => 'Kantin FK',
+                'nama' => 'Kantin FK'
             ],
         ]);
     }

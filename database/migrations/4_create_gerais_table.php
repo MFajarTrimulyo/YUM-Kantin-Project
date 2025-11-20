@@ -19,8 +19,7 @@ return new class extends Migration
             $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');
 
             // FK Kantin
-            $table->string('fk_kantin', 20);
-            $table->foreign('fk_kantin')->references('id')->on('kantins')->onDelete('cascade');
+            $table->foreignId('fk_kantin')->constrained('kantins')->onDelete('cascade');
 
             $table->string('nama');
             $table->text('deskripsi')->nullable();

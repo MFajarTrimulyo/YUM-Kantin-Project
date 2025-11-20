@@ -15,23 +15,18 @@ class KategoriSeeder extends Seeder
     {
         Kategori::insert([
             [   
-                'id' => 'KAT250000',
                 'nama' => 'Semua'
             ],
             [   
-                'id' => 'KAT250001',
                 'nama' => 'Makanan'
             ],
             [
-                'id' => 'KAT250002',
                 'nama' => 'Minuman'
             ],
             [
-                'id' => 'KAT250003',
                 'nama' => 'Camilan'
             ],
             [
-                'id' => 'KAT250004',
                 'nama' => 'Lainnya'
             ],
         ]);

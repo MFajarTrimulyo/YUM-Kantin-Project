@@ -19,8 +19,7 @@ return new class extends Migration
             $table->foreign('fk_gerai')->references('id')->on('gerais')->onDelete('cascade');
             
             // FK Kategori
-            $table->string('fk_kategori', 20);
-            $table->foreign('fk_kategori')->references('id')->on('kategoris')->onDelete('cascade');
+            $table->foreignId('fk_kategori')->constrained('kategoris')->onDelete('cascade');
             
             $table->string('photo')->nullable();
             $table->string('nama');
