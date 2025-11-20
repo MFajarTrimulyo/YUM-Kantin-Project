@@ -28,10 +28,17 @@
                     <div class="w-full bg-gray-50 rounded-lg p-3 mb-2">
                         <p class="text-xs text-gray-400 uppercase font-bold mb-1">Status Akun</p>
                         @if($user->role === 'penjual')
-                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold flex items-center justify-center gap-1">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Penjual Terverifikasi
-                            </span>
+                            @if ($gerai && $gerai->is_verified)
+                                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold flex items-center justify-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Penjual Terverifikasi
+                                </span>
+                            @else
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold flex items-center justify-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Menunggu Verifikasi
+                                </span>
+                            @endif
                         @elseif($user->role === 'admin')
                              <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold">Admin</span>
                         @else
@@ -186,7 +193,7 @@
     <div class="flex items-center justify-center min-h-screen w-full px-4 pt-4 pb-20 text-center sm:p-0">
         
         <!-- Background transition overlay -->
-        <div class="fixed inset-0 transition-opacity" onclick="toggleModal('seller-modal')"></div>
+        <div class="fixed bg-gray-300 bg-opacity-50 inset-0 transition-opacity" onclick="toggleModal('seller-modal')"></div>
 
         <!-- Modal Panel -->
         <div class="relative inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
@@ -203,7 +210,7 @@
                     <!-- Text -->
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <h3 class="text-lg leading-6 font-bold text-gray-900" id="modal-title">
-                            Konfirmasi Upgrade Akun
+                            Konfirmasi Buat Akun Penjual
                         </h3>
                         <div class="mt-2">
                             <p class="text-sm text-gray-500">

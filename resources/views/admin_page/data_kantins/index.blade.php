@@ -4,7 +4,7 @@
 
 <div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-gray-100 p-6">
     
-    <div class="flex flex-col md:flex-row justify-end items-center gap-4 mb-6">
+    <div class="flex justify-end items-center gap-4 mb-6">
         <a href="{{ route('kantins.create') }}" class="bg-yum-primary text-sm text-white px-6 py-2 rounded-lg font-semibold hover:bg-yum-dark transition flex items-center shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             Tambah Kantin

@@ -16,10 +16,11 @@ class UserController extends Controller
 
     public function edit_profile()
     {
-        
+        $gerai = auth()->user()->gerai;
         return view('user_page.profile.index', [
             'user' => auth()->user(),
-            'username' => auth()->user()->username
+            'username' => auth()->user()->username,
+            'gerai' => $gerai
         ]);
     }
 

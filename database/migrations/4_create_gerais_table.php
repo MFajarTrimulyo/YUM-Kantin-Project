@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('gerais', function (Blueprint $table) {
             $table->string('id', 20)->primary();
             
+            $table->string('photo');
             // FK Users
             $table->string('fk_user', 20);
             $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->string('nama');
             $table->text('deskripsi')->nullable();
             $table->boolean('is_open')->default(true);
+            $table->boolean('is_verified')->default(false);
             $table->timestamps();
         });
     }

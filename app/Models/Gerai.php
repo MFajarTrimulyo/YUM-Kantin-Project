@@ -15,16 +15,28 @@ class Gerai extends Model
 
     protected $fillable = [
         'id',
+        'photo',
         'fk_user',
         'fk_kantin',
         'nama',
         'deskripsi',
-        'is_open'
+        'is_open',
+        'is_verified',
     ];
 
     public function getCustomIdPrefix(): string
     {
         return 'GRI';
+    }
+
+    // Relasi ke User
+    public function user() {
+        return $this->belongsTo(User::class, 'fk_user');
+    }
+
+    // Relasi ke Kantin
+    public function kantin() {
+        return $this->belongsTo(Kantin::class, 'fk_kantin');
     }
 
     // Relasi ke Produk

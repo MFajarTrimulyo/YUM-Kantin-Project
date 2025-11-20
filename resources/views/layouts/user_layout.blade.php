@@ -89,7 +89,7 @@
 
                         {{-- ADMIN & GERAI PAGE --}}
                         @if (auth()->user()->role == 'penjual')
-                            <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
+                            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
                                 Kelola Gerai
                             </a>
                         @elseif (auth()->user()->role == 'admin')
