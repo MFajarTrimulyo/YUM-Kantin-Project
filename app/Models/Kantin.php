@@ -13,6 +13,11 @@ class Kantin extends Model
     public $incrementing = false;
     protected $keyType = 'char';
 
+    protected $fillable = [
+        'id',
+        'nama',
+    ];
+
     public function getCustomIdPrefix(): string
     {
         return 'KNT';

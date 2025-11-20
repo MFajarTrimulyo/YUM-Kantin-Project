@@ -13,6 +13,16 @@ class Produk extends Model
     public $incrementing = false;
     protected $keyType = 'char';
 
+    protected $fillable = [
+        'id',
+        'nama',
+        'deskripsi',
+        'harga',
+        'fk_kategori',
+        'fk_gerai',
+        'stok',
+    ];
+
     public function getCustomIdPrefix(): string
     {
         return 'PRD';

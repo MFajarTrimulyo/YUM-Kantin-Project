@@ -13,6 +13,15 @@ class Gerai extends Model
     public $incrementing = false;
     protected $keyType = 'char';
 
+    protected $fillable = [
+        'id',
+        'fk_user',
+        'fk_kantin',
+        'nama',
+        'deskripsi',
+        'is_open'
+    ];
+
     public function getCustomIdPrefix(): string
     {
         return 'GRI';

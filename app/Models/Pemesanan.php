@@ -15,7 +15,7 @@ class Pemesanan extends Model
 
     public function getCustomIdPrefix(): string
     {
-        return 'ORD';
+        return '#ORD-';
     }
 
     // Relasi ke Detail

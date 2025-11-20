@@ -13,6 +13,14 @@ class DetailPemesanan extends Model
     public $incrementing = false;
     protected $keyType = 'char';
 
+    protected $fillable = [
+        'id',
+        'fk_order',
+        'fk_produk',
+        'qty',
+        'harga_satuan_saat_beli'
+    ];
+
     public function getCustomIdPrefix(): string
     {
         return 'DTL';
