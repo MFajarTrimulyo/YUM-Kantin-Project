@@ -27,7 +27,6 @@ class GeraiController extends Controller
             'nama' => 'required|string|max:255',
             'fk_kantin' => 'required|exists:kantins,id',
             'deskripsi' => 'nullable|string',
-            'is_open' => 'boolean',
             'photo' => 'nullable|image|max:2048',
         ]);
 
@@ -43,7 +42,6 @@ class GeraiController extends Controller
         } else {
             DB::transaction(function() use ($request, $user) {
                 Gerai::create([
-                   // 'id' => 'GER' . time(), // Uncomment if no DB Trigger
                     'fk_user' => $user->id,
                     'fk_kantin' => $request->fk_kantin,
                     'nama' => $request->nama,
@@ -55,7 +53,7 @@ class GeraiController extends Controller
             $message = 'Selamat! Gerai Anda berhasil dibuat.';
         }
 
-        return redirect()->route('dashboard')->with('success', $message);
+        return redirect()->route('gerai.create')->with('success', $message);
     }
 
     public function pending()

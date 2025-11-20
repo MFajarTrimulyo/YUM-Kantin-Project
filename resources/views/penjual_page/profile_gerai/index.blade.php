@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-4xl mx-auto">
 
-    {{-- Warning Alert if redirected --}}
+    {{-- Warning Alert --}}
     @if(session('warning'))
     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
         <div class="flex">
@@ -33,6 +33,13 @@
                 @endif
             </p>
         </div>
+
+        @if(session('success'))
+            <div class="mb-6 bg-green-50 border border-green-100 text-green-600 px-4 py-3 rounded-lg text-sm flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                {{ session('success') }}
+            </div>
+        @endif
 
         <form action="{{ route('gerai.store') }}" method="POST">
             @csrf
@@ -87,7 +94,7 @@
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" name="is_open" class="sr-only peer" {{ ($gerai->is_open ?? true) ? 'checked' : '' }}>
-                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yum-primary"></div>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yum-primary"></div>
                         <span class="ml-3 text-sm font-medium text-gray-900 peer-checked:text-yum-primary">
                             {{ ($gerai->is_open ?? true) ? 'Buka' : 'Tutup' }}
                         </span>

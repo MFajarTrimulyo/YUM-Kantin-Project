@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DetailPemesananController;
+use App\Http\Controllers\GeraiController;
 use App\Http\Controllers\KantinController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
@@ -71,9 +72,9 @@ Route::middleware(['auth'])->group(function () {
 
 
     // Jadi Penjual Routes
-    Route::get('/gerai/create', [App\Http\Controllers\GeraiController::class, 'createOrEdit'])->name('gerai.create');
-    Route::post('/gerai/store', [App\Http\Controllers\GeraiController::class, 'storeOrUpdate'])->name('gerai.store');
-    Route::get('/gerai/pending', [App\Http\Controllers\GeraiController::class, 'pending'])->name('gerai.pending');
+    Route::get('/gerai/create', [GeraiController::class, 'createOrEdit'])->name('gerai.create');
+    Route::post('/gerai/store', [GeraiController::class, 'storeOrUpdate'])->name('gerai.store');
+    Route::get('/gerai/pending', [GeraiController::class, 'pending'])->name('gerai.pending');
 
     // Penjual Routes
     Route::middleware(['hak.akses:penjual'])->prefix('/penjual')->group(function () {
