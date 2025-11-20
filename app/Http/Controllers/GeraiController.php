@@ -27,7 +27,7 @@ class GeraiController extends Controller
             'nama' => 'required|string|max:255',
             'fk_kantin' => 'required|exists:kantins,id',
             'deskripsi' => 'nullable|string',
-            'photo' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         if ($user->gerai) {
@@ -36,6 +36,7 @@ class GeraiController extends Controller
                 'nama' => $request->nama,
                 'fk_kantin' => $request->fk_kantin,
                 'deskripsi' => $request->deskripsi,
+                'photo' => $request->photo ? $request->photo->store('photos', 'public') : $user->gerai->photo,
                 'is_open' => $request->has('is_open'),
             ]);
             $message = 'Profil Gerai berhasil diperbarui!';
@@ -46,6 +47,7 @@ class GeraiController extends Controller
                     'fk_kantin' => $request->fk_kantin,
                     'nama' => $request->nama,
                     'deskripsi' => $request->deskripsi,
+                    'photo' => $request->photo ? $request->photo->store('photos', 'public') : null,
                     'is_open' => true,
                 ]);
             });

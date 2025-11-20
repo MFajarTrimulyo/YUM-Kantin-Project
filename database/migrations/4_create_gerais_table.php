@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('gerais', function (Blueprint $table) {
             $table->string('id', 20)->primary();
             
-            $table->string('photo');
+            $table->string('photo')->nullable();
             // FK Users
             $table->string('fk_user', 20);
             $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');

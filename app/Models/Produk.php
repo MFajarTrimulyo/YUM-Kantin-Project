@@ -15,9 +15,12 @@ class Produk extends Model
 
     protected $fillable = [
         'id',
+        'photo',
         'nama',
         'deskripsi',
+        'pilihan_rasa',
         'harga',
+        'harga_diskon',
         'fk_kategori',
         'fk_gerai',
         'stok',
@@ -32,7 +35,7 @@ class Produk extends Model
         return $this->belongsTo(Kategori::class, 'fk_kategori');
     }
     
-    public function gerais() {
+    public function gerai() {
         return $this->belongsTo(Gerai::class, 'fk_gerai');
     }
 }

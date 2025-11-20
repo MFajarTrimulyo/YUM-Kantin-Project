@@ -71,7 +71,7 @@ class UserController extends Controller
         $user->role = 'penjual';
         $user->save();
 
-        return redirect()->route('profile.edit', ['username' => $user->username])->with('success', 'Anda sekarang telah menjadi penjual.');
+        return redirect()->route('gerai.create', ['username' => $user->username])->with('success', 'Anda sekarang telah menjadi penjual.');
     }
 
     public function menu(Request $request)

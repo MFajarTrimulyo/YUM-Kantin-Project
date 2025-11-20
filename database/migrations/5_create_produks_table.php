@@ -24,7 +24,9 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->string('nama');
             $table->text('deskripsi')->nullable();
+            $table->string('pilihan_rasa')->nullable();
             $table->decimal('harga', 12, 2);
+            $table->decimal('harga_diskon', 12, 2);
             $table->integer('stok')->default(0);
             $table->timestamps();
         });

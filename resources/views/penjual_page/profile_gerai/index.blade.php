@@ -41,12 +41,26 @@
             </div>
         @endif
 
-        <form action="{{ route('gerai.store') }}" method="POST">
+        <form action="{{ route('gerai.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             {{-- Section: Informasi Gerai --}}
             <div class="space-y-6">
                 
+                {{-- Photo --}}
+                <div class="flex-1">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Foto Gerai</label>
+                    <input type="file" name="photo" accept="image/*"
+                        class="block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-yum-primary/10 file:text-yum-primary
+                                hover:file:bg-yum-primary/20 cursor-pointer">
+                    <p class="text-xs text-gray-400 mt-1">Format: JPG, PNG, JPEG. Max: 2MB.</p>
+                    @error('photo') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+
                 {{-- Nama Gerai --}}
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">Nama Gerai</label>
