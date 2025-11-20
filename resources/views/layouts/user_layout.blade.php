@@ -14,6 +14,13 @@
         data-success-message="{{ session('success') }}"
         data-error-message="{{ session('error') }}">
 
+    <div id="page-loader" class="fixed inset-0 z-9999 bg-white/90 hidden flex-col items-center justify-center transition-opacity duration-300">
+        <svg class="animate-spin h-8 w-8 text-yum-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+    </div>
+
     <nav class="bg-white py-4 px-6 shadow-sm flex justify-between items-center sticky top-0 z-50 rounded-b-xl">
         <!-- Logo -->
         <a href="/" class="text-2xl select-none font-bold">

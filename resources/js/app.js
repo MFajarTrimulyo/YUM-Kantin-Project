@@ -168,8 +168,60 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
     // ==========================================
-    // 7. SWEETALERT
+    // 6. PAGE LOADER LOGIC
+    // ==========================================
+    const loader = document.getElementById('page-loader');
+
+    // Fungsi untuk menampilkan loader
+    function showLoader() {
+        loader.classList.remove('hidden');
+        loader.classList.add('flex');
+    }
+
+    // Fungsi untuk menyembunyikan loader (jika user menekan tombol Back browser)
+    function hideLoader() {
+        loader.classList.add('hidden');
+        loader.classList.remove('flex');
+    }
+
+    // A. Deteksi Klik Link
+    const links = document.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            const target = this.getAttribute('target');
+
+            // Jangan tampilkan loader jika:
+            // 1. Link kosong atau # (biasanya untuk modal/js)
+            // 2. Link membuka tab baru (_blank)
+            // 3. Link adalah javascript:void(0)
+            if (href && href !== '#' && href.substring(0, 4) !== 'java' && target !== '_blank') {
+                showLoader();
+            }
+        });
+    });
+
+    // B. Deteksi Submit Form (Simpan, Delete, Login, dll)
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function() {
+            showLoader();
+        });
+    });
+
+    // C. Fix untuk Tombol "Back" di Browser (Safari/Chrome Cache)
+    // Jika user tekan Back, halaman diambil dari cache, loader harus disembunyikan
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            hideLoader();
+        }
+    });
+
+
+    // ==========================================
+    // 8. SWEETALERT
     // ==========================================
     const successMessage = $('body').data('success-message');
     const errorMessage = $('body').data('error-message');

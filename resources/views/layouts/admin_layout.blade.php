@@ -16,6 +16,13 @@
         data-success-message="{{ session('success') }}"
         data-error-message="{{ session('error') }}">
 
+    <div id="page-loader" class="fixed inset-0 z-9999 bg-white/90 hidden flex-col items-center justify-center transition-opacity duration-300">
+        <svg class="animate-spin h-8 w-8 text-yum-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+    </div>
+
     <div class="flex h-screen overflow-hidden">
         <!-- SIDEBAR -->
         <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col z-10">
@@ -77,7 +84,7 @@
 
                         <!-- Kelola Menu -->
                         <li>
-                            <a href="{{-- route('produks.index') --}}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yum-primary rounded-lg font-medium transition-colors">
+                            <a href="{{ route('produk.index') }}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yum-primary rounded-lg font-medium transition-colors">
                                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                                 Kelola Menu
                             </a>
