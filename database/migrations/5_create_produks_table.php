@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('fk_kategori', 20);
             $table->foreign('fk_kategori')->references('id')->on('kategoris')->onDelete('cascade');
             
+            $table->string('photo')->nullable();
             $table->string('nama');
             $table->text('deskripsi')->nullable();
             $table->decimal('harga', 12, 2);

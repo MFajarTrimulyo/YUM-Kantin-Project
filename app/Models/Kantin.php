@@ -11,7 +11,7 @@ class Kantin extends Model
     
     protected $table = 'kantins';
     public $incrementing = false;
-    protected $keyType = 'char';
+    protected $keyType = 'string';
 
     protected $fillable = [
         'id',

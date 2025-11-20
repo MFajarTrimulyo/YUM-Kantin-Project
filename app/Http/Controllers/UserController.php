@@ -4,12 +4,63 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
     public function home()
     {
         return view('home');
+    }
+
+    public function edit_profile()
+    {
+        
+        return view('user_page.profile.index', [
+            'user' => auth()->user(),
+            'username' => auth()->user()->username
+        ]);
+    }
+
+    public function update_profile(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'alamat' => 'nullable|string|max:500',
+            'no_telp' => 'nullable|string|max:20',
+            'current_password' => 'nullable|string|min:6|required_with:new_password',
+            'new_password' => 'nullable|string|min:6|confirmed|required_with:current_password',
+        ]);
+
+        if ($request->hasFile('photo')) {
+        
+            if ($user->photo && Storage::exists('public/' . $user->photo)) {
+                Storage::delete('public/' . $user->photo);
+            }
+
+            $path = $request->file('photo')->store('photos', 'public');
+            
+            $user->photo = $path;
+        }
+
+        $user->nama = $request->input('nama');
+        $user->email = $request->input('email');
+        $user->alamat = $request->input('alamat');
+        $user->no_telp = $request->input('no_telp');
+        if ($request->filled('current_password') && $request->filled('new_password')) {
+            if (password_verify($request->input('current_password'), $user->password)) {
+                $user->password = bcrypt($request->input('new_password'));
+            } else {
+                return back()->withErrors(['current_password' => 'Password saat ini tidak sesuai.'])->withInput();
+            }
+        }
+        $user->save();
+
+        return redirect()->route('profile.edit', ['username' => $user->username])->with('success', 'Profil berhasil diperbarui.');
     }
 
     public function menu(Request $request)

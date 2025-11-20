@@ -11,7 +11,7 @@ class Kategori extends Model
     
     protected $table = 'kategoris';
     public $incrementing = false;
-    protected $keyType = 'char';
+    protected $keyType = 'string';
 
     protected $fillable = [
         'id',

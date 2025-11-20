@@ -10,7 +10,9 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans bg-gray-50 text-gray-800 antialiased">
+<body class="font-sans bg-gray-50 text-gray-800 antialiased"
+        data-success-message="{{ session('success') }}"
+        data-error-message="{{ session('error') }}">
 
     <nav class="bg-white py-4 px-6 shadow-sm flex justify-between items-center sticky top-0 z-50 rounded-b-xl">
         <!-- Logo -->
@@ -63,14 +65,19 @@
             {{-- User Menu --}}
             <div class="relative">
                 <button id="user-menu-button" class="flex items-center font-bold cursor-pointer hover:text-yum-primary transition">
-                    {{ Auth::user()->name }}
-                    <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    @if(Auth::user()->photo == null)
+                        <span class="border border-gray-200 rounded-full w-8 h-8 flex items-center justify-center">
+                            {{ substr(Auth::user()->nama, 0, 1) }}
+                        </span>
+                    @else
+                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="w-8 h-8 border border-gray-200 object-cover rounded-full">
+                    @endif
                 </button>
 
                 <div id="user-menu-dropdown" 
-                     class="hidden absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-xl ring-1 ring-slate-300 ring-opacity-5 z-50 overflow-hidden origin-top-right">
+                        class="hidden absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-xl ring-1 ring-slate-300 ring-opacity-5 z-50 overflow-hidden origin-top-right">
                     <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
+                        <a href="{{ route('profile.edit', ['username' => Auth::user()->username]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
                             My Profile
                         </a>
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
@@ -124,8 +131,8 @@
                 <h3 class="text-lg font-bold mb-4 text-yum-yellow">Navigasi</h3>
                 <ul class="space-y-2 text-white/80">
                     <li><a href="{{ route('home') }}" class="hover:text-white hover:underline">Home</a></li>
-                    <li><a href="{{ route('menu.index') }}" class="hover:text-white hover:underline">Semua Menu</a></li>
-                    <li><a href="#" class="hover:text-white hover:underline">Daftar Kantin</a></li>
+                    <li><a href="{{ route('menu.index') }}" class="hover:text-white hover:underline">List Menu</a></li>
+                    <li><a href="#" class="hover:text-white hover:underline">List Kantin</a></li>
                     <li><a href="#" class="hover:text-white hover:underline">Tentang Kami</a></li>
                 </ul>
             </div>

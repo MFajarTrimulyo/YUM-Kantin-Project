@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pemesanan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PemesananController extends Controller
 {
@@ -12,54 +13,12 @@ class PemesananController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Pemesanan::where('fk_user', Auth::id())
+                        ->with(['detail_pemesanans.produk', 'gerai'])
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
+        return view('user_page.orders.index', compact('orders'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Pemesanan $pemesanan)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pemesanan $pemesanan)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Pemesanan $pemesanan)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pemesanan $pemesanan)
-    {
-        //
-    }
 }

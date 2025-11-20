@@ -30,6 +30,9 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/profile/{username}', [UserController::class, 'edit_profile'])->name('profile.edit');
+    Route::put('/profile/{username}', [UserController::class, 'update_profile'])->name('profile.update');
 });
 
 Route::get('/home', [UserController::class, 'home'])->name('home');

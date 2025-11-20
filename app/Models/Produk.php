@@ -11,7 +11,7 @@ class Produk extends Model
     
     protected $table = 'produks';
     public $incrementing = false;
-    protected $keyType = 'char';
+    protected $keyType = 'string';
 
     protected $fillable = [
         'id',

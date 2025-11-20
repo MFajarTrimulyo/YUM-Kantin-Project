@@ -16,7 +16,7 @@ class User extends Authenticatable
     use HasCustomId; // Custom ID Trait
 
     public $incrementing = false;
-    protected $keyType = 'char';
+    protected $keyType = 'string';
 
     public function getCustomIdPrefix(): string
     {
@@ -30,6 +30,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'nama',
+        'photo',
         'email',
         'username',
         'password',
@@ -69,5 +70,20 @@ class User extends Authenticatable
     // Pembeli bisa melakukan banyak Pemesanan
     public function pemesanans() {
         return $this->hasMany(Pemesanan::class, 'fk_user');
+    }
+
+    public function getRememberToken()
+    {
+        return $this->remember_token;
+    }
+
+    public function setRememberToken($value)
+    {
+        $this->remember_token = $value;
+    }
+
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
     }
 }

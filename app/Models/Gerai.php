@@ -11,7 +11,7 @@ class Gerai extends Model
     
     protected $table = 'gerais';
     public $incrementing = false;
-    protected $keyType = 'char';
+    protected $keyType = 'string';
 
     protected $fillable = [
         'id',

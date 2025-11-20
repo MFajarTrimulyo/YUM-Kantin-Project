@@ -18,7 +18,7 @@
                 LAPER TAPI BINGUNG MAU MAKAN APA?<br>
                 TEMUKAN MENU FAVORITMU
                 <button id="here-button"
-                    class="ml-1 border-2 border-white text-white hover:bg-yum-primary hover:border-yum-primary hover:text-white transition-all duration-300 text-md px-3 rounded-lg font-bold">
+                    class="ml-1 border-2 border-white text-white hover:bg-yum-primary hover:border-yum-primary hover:text-white transition-all duration-300 text-md px-4 py-1 rounded-lg font-bold">
                     DISINI!
                 </button>
             </p>

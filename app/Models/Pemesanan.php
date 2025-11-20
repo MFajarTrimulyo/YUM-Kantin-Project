@@ -11,7 +11,15 @@ class Pemesanan extends Model
     
     protected $table = 'pemesanan';
     public $incrementing = false;
-    protected $keyType = 'char';
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        'fk_user', 
+        'fk_gerai', 
+        'total_harga', 
+        'status', 
+        'status_bayar'
+    ];
 
     public function getCustomIdPrefix(): string
     {

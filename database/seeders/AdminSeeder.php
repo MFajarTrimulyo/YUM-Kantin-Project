@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class AdminSeeder extends Seeder
     {
         User::create([
             'id' => 'USR250000',
+            'photo'     => null,
             'nama'      => 'Admin YUM',
             'username'  => 'adminyum',
             'email'     => 'admin@yum-kantin.com',

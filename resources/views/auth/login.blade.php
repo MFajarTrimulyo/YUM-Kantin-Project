@@ -45,7 +45,7 @@
 
     <div class="flex justify-between items-center text-xs text-gray-600 mb-8">
         <label class="flex items-center cursor-pointer hover:text-yum-primary">
-            <input type="checkbox" class="mr-2 rounded text-yum-primary focus:ring-yum-primary"> Remember Me
+            <input type="checkbox" name="remember" class="mr-2 rounded text-yum-primary focus:ring-yum-primary"> Remember Me
         </label>
         <a href="/forgot-password" class="hover:text-yum-primary hover:underline transition">Forgot your Password?</a>
     </div>

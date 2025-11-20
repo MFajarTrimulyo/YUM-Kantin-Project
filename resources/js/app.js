@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 3. SWEETALERT
+    // 7. SWEETALERT
     // ==========================================
     const successMessage = $('body').data('success-message');
     const errorMessage = $('body').data('error-message');
