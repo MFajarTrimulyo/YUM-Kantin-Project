@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
@@ -63,14 +64,33 @@ class UserController extends Controller
         return redirect()->route('profile.edit', ['username' => $user->username])->with('success', 'Profil berhasil diperbarui.');
     }
 
+    public function jadi_penjual(Request $request)
+    {
+        $user = auth()->user();
+        $user->role = 'penjual';
+        $user->save();
+
+        return redirect()->route('profile.edit', ['username' => $user->username])->with('success', 'Anda sekarang telah menjadi penjual.');
+    }
+
     public function menu(Request $request)
     {
-        // --- MOCKUP DATA (Ganti ini dengan query Database Anda nanti) ---
-        // Contoh DB: $products = Product::query();
-        
         // Simulasi Pencarian
         $search = $request->input('search');
         $category = $request->input('category');
+
+        // $products = Produk::with('gerai', 'kategori')
+        //     ->where(function ($query) use ($search, $category) {
+        //         if ($search) {
+        //             $query->where('nama', 'like', '%' . $search . '%');
+        //         }
+        //         if ($category) {
+        //             $query->whereHas('kategori', function ($q) use ($category) {
+        //                 $q->where('nama', $category);
+        //             });
+        //         }
+        //     })
+        //     ->paginate(12);
 
         // Data Dummy untuk Tampilan
         $products = collect([]);
@@ -83,7 +103,6 @@ class UserController extends Controller
                 'price' => 10000,
                 'original_price' => 15000,
                 'sold' => 100 + $i,
-                'rating' => 4.5,
                 'image' => 'pictures/example-food.png'
             ]);
         }

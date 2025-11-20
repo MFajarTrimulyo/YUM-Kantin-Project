@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profile/{username}', [UserController::class, 'edit_profile'])->name('profile.edit');
     Route::put('/profile/{username}', [UserController::class, 'update_profile'])->name('profile.update');
+
+    Route::post('/become-seller', [UserController::class, 'jadi_penjual'])->name('become.seller');
 });
 
 Route::get('/home', [UserController::class, 'home'])->name('home');
