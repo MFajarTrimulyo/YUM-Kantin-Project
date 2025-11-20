@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KantinController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,13 @@ Route::prefix('/admin')->group(function () {
     Route::get('/kategoris/{id}/edit', [KategoriController::class, 'edit'])->name('kategoris.edit');
     Route::put('/kategoris/{id}', [KategoriController::class, 'update'])->name('kategoris.update');
     Route::delete('/kategoris/{id}', [KategoriController::class, 'destroy'])->name('kategoris.destroy');
+
+    Route::get('/kantins', [KantinController::class, 'index'])->name('kantins.index');
+    Route::get('/kantins/create', [KantinController::class, 'create'])->name('kantins.create');
+    Route::post('/kantins', [KantinController::class, 'store'])->name('kantins.store');
+    Route::get('/kantins/{id}/edit', [KantinController::class, 'edit'])->name('kantins.edit');
+    Route::put('/kantins/{id}', [KantinController::class, 'update'])->name('kantins.update');
+    Route::delete('/kantins/{id}', [KantinController::class, 'destroy'])->name('kantins.destroy');
 });
 
 Route::middleware('guest')->group(function () {

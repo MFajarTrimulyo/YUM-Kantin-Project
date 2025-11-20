@@ -113,6 +113,23 @@
                                         class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-yum-primary focus:ring-2 focus:ring-yum-primary/20 focus:bg-white transition outline-none @error('email') border-red-500 @enderror">
                                     @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                                 </div>
+                                
+                                <!-- No Telp -->
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">No Telp</label>
+                                    <input type="text" name="no_telp" value="{{ old('no_telp', $user->no_telp) }}" 
+                                        class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-yum-primary focus:ring-2 focus:ring-yum-primary/20 focus:bg-white transition outline-none @error('no_telp') border-red-500 @enderror">
+                                    @error('no_telp') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                                </div>
+
+                                <!-- Alamat -->
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Alamat</label>
+                                    <textarea name="alamat" 
+                                        class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 
+                                        focus:border-yum-primary focus:ring-2 focus:ring-yum-primary/20 focus:bg-white transition outline-none @error('alamat') border-red-500 @enderror">{{ old('alamat', $user->alamat) }}</textarea>
+                                    @error('alamat') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                                </div>
                             </div>
                         </div>
 

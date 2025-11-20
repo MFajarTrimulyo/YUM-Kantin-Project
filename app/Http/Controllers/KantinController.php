@@ -12,7 +12,8 @@ class KantinController extends Controller
      */
     public function index()
     {
-        //
+        $kantins = Kantin::paginate(5);
+        return view('admin_page.data_kantins.index', compact('kantins'));
     }
 
     /**
@@ -20,7 +21,7 @@ class KantinController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin_page.data_kantins.create');
     }
 
     /**
@@ -28,38 +29,52 @@ class KantinController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'nama' => 'required|string|max:255|unique:kategoris,nama',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kantin $kantin)
-    {
-        //
+        Kantin::create([
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->route('kantins.index')
+            ->with('success', 'Kantin berhasil ditambahkan!');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kantin $kantin)
+    public function edit($id)
     {
-        //
+        $kantin = Kantin::findOrFail($id); 
+        return view('admin_page.data_kantins.edit', compact('kantin'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kantin $kantin)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string|max:255|unique:kategoris,nama,'. $id,
+        ]);
+
+        $kantin = Kantin::findOrFail($id);
+        $kantin->update([
+            'nama' => $request->nama
+        ]);
+
+        return redirect()->route('kantins.index')->with('success', 'Kantin berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Kantin $kantin)
+    public function destroy($id)
     {
-        //
+        $kantin = Kantin::findOrFail($id);
+        $kantin->delete();
+        
+        return redirect()->route('kantins.index')->with('success', 'Kantin berhasil dihapus');
     }
 }
