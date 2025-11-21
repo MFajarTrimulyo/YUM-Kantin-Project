@@ -28,6 +28,7 @@ return new class extends Migration
             $table->decimal('harga', 12, 2);
             $table->decimal('harga_diskon', 12, 2);
             $table->integer('stok')->default(0);
+            $table->integer('terjual')->default(0);
             $table->timestamps();
         });
     }

@@ -62,7 +62,7 @@
             @foreach ($promoProduks as $product)
             <div class="snap-start shrink-0 w-48 md:w-56"> 
                 <div class="bg-white rounded-xl p-3 shadow-lg hover:-translate-y-1 transition duration-300 h-full flex flex-col">
-                    <div class="relative rounded-lg overflow-hidden mb-3 aspect-auto bg-gray-100">
+                    <div class="relative rounded-lg overflow-hidden mb-3 aspect-square bg-gray-100">
                         @if($product->photo)
                             <img src="{{ asset('storage/' . $product->photo) }}" class="w-full h-full object-cover">
                         @else
@@ -84,7 +84,19 @@
                             <div class="text-[10px] text-gray-400 line-through">Rp {{ number_format($product->harga, 0, ',', '.') }}</div>
                             <div class="text-sm font-bold text-black">Rp {{ number_format($product->harga - $product->harga_diskon, 0, ',', '.') }}</div>
                         </div>
-                        <button class="bg-yum-primary text-white p-1.5 rounded-md hover:bg-yum-dark transition shadow-md">
+                        <button type="button" 
+                            onclick="openCartModal({
+                                id: '{{ $product->id }}',
+                                nama: '{{ addslashes($product->nama) }}',
+                                harga: {{ $product->harga_diskon > 0 ? $product->harga - $product->harga_diskon : $product->harga }},
+                                harga_asli: {{ $product->harga }},
+                                diskon: {{ $product->harga_diskon }},
+                                photo: '{{ $product->photo ? asset('storage/' . $product->photo) : '' }}',
+                                gerai: '{{ addslashes($product->gerai->nama ?? 'Gerai') }}',
+                                stok: {{ $product->stok }},
+                                rasa: '{{ $product->pilihan_rasa ?? '' }}'
+                            })"
+                            class="bg-yum-primary/10 text-yum-primary p-2 rounded-lg hover:bg-yum-primary hover:text-white transition shadow-sm border border-yum-primary/20">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         </button>
                     </div>
@@ -114,7 +126,7 @@
                 <div class="snap-start shrink-0 w-48 md:w-52">
                     <div class="bg-white rounded-xl p-3 border border-gray-200 hover:border-yum-primary transition duration-300 group h-full flex flex-col">
                         
-                        <div class="overflow-hidden rounded-lg mb-3 relative aspect-auto bg-gray-50">
+                        <div class="overflow-hidden rounded-lg mb-3 relative aspect-video bg-gray-50">
                             @if($product->photo)
                                 <img src="{{ asset('storage/' . $product->photo) }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             @else

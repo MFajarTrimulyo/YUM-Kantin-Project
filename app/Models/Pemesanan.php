@@ -9,7 +9,7 @@ class Pemesanan extends Model
 {
     use HasCustomId;
     
-    protected $table = 'pemesanan';
+    protected $table = 'pemesanans';
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -23,9 +23,13 @@ class Pemesanan extends Model
 
     public function getCustomIdPrefix(): string
     {
-        return '#ORD-';
+        return 'ORD-';
     }
 
+    // Relasi ke Gerai
+    public function gerai() {
+        return $this->belongsTo(Gerai::class, 'fk_gerai');
+    }
     // Relasi ke Detail
     public function detail_pemesanans() {
         return $this->hasMany(DetailPemesanan::class, 'fk_order');

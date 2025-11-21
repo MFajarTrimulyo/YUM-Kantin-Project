@@ -21,7 +21,7 @@
         
         <a href="{{-- route('menu.show', $product->id) --}}" class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center cursor-pointer">
             <span class="bg-white text-yum-primary font-bold py-2 px-4 rounded-full shadow-lg text-xs transform translate-y-4 group-hover:translate-y-0 transition duration-300">
-                Lihat Detail
+                Lihat Produk
             </span>
         </a>
     </div>
@@ -31,7 +31,7 @@
             <span class="flex items-center gap-1">
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 {{-- Random Sold Count for Demo, or 0 --}}
-                {{ rand(10, 100) }}+ Terjual
+                {{ $product->terjual ?? 0 }}+ Terjual
             </span>
             <span class="bg-gray-100 px-1.5 rounded text-gray-500 truncate max-w-[50%]">
                 {{ $product->gerai->nama ?? 'Gerai' }}
@@ -41,24 +41,45 @@
         <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 leading-tight group-hover:text-yum-primary transition" title="{{ $product->nama }}">
             {{ $product->nama }}
         </h3>
-        
+
+        {{-- Rasa --}}
+        @if($product->pilihan_rasa)
+        <div class="mb-2">
+            <span class="bg-gray-100 text-gray-500 text-[10px] px-2 py-0.5 rounded font-bold border border-yum-primary/20">
+                Varian: {{ $product->pilihan_rasa }}
+            </span>
+        </div>
+        @endif
+
         <div class="mt-auto pt-3 flex items-end justify-between">
             <div>
                 @if($product->harga_diskon > 0)
                     <div class="text-[10px] text-gray-400 line-through">
                         Rp {{ number_format($product->harga, 0, ',', '.') }}
                     </div>
-                    <div class="text-sm md:text-base font-bold text-red-500">
+                    <div class="text-sm md:text-xl font-bold text-red-500">
                         Rp {{ number_format($product->harga - $product->harga_diskon, 0, ',', '.') }}
                     </div>
                 @else
-                    <div class="text-sm md:text-base font-bold text-yum-primary">
+                    <div class="text-sm md:text-xl font-bold text-yum-primary">
                         Rp {{ number_format($product->harga, 0, ',', '.') }}
                     </div>
                 @endif
             </div>
             
-            <button class="bg-yum-primary/10 text-yum-primary p-2 rounded-lg hover:bg-yum-primary hover:text-white transition shadow-sm border border-yum-primary/20">
+            <button type="button" 
+                onclick="openCartModal({
+                    id: '{{ $product->id }}',
+                    nama: '{{ addslashes($product->nama) }}',
+                    harga: {{ $product->harga_diskon > 0 ? $product->harga - $product->harga_diskon : $product->harga }},
+                    harga_asli: {{ $product->harga }},
+                    diskon: {{ $product->harga_diskon }},
+                    photo: '{{ $product->photo ? asset('storage/' . $product->photo) : '' }}',
+                    gerai: '{{ addslashes($product->gerai->nama ?? 'Gerai') }}',
+                    stok: {{ $product->stok }},
+                    rasa: '{{ $product->pilihan_rasa ?? '' }}'
+                })"
+                class="bg-yum-primary/10 text-yum-primary p-2 rounded-lg hover:bg-yum-primary hover:text-white transition shadow-sm border border-yum-primary/20">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             </button>
         </div>

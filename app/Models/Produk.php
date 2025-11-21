@@ -24,6 +24,7 @@ class Produk extends Model
         'fk_kategori',
         'fk_gerai',
         'stok',
+        'terjual'
     ];
 
     public function getCustomIdPrefix(): string

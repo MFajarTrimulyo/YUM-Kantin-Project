@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('qty');
             // Simpan harga saat beli
             $table->decimal('harga_satuan_saat_beli', 12, 2); 
-            
+            $table->text('catatan')->nullable();
             $table->timestamps();
         });
     }

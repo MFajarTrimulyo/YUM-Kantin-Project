@@ -9,7 +9,7 @@ class DetailPemesanan extends Model
 {
     use HasCustomId;
     
-    protected $table = 'detail_pemesanan';
+    protected $table = 'detail_pemesanans';
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -18,7 +18,8 @@ class DetailPemesanan extends Model
         'fk_order',
         'fk_produk',
         'qty',
-        'harga_satuan_saat_beli'
+        'harga_satuan_saat_beli',
+        'catatan'
     ];
 
     public function getCustomIdPrefix(): string

@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\DetailPemesananController;
 use App\Http\Controllers\GeraiController;
 use App\Http\Controllers\KantinController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -47,6 +49,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laporan', [DetailPemesananController::class, 'index'])->name('detail.index');
     });
 
+    // Cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::delete('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+    
+    // Checkout (Logic Baru)
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+
+    // Orders (Riwayat)
+    Route::get('/orders', [PemesananController::class, 'index'])->name('pemesanan.index');
 
     // Admin Routes
     Route::middleware(['hak.akses:admin'])->prefix('/admin')->group(function () {
