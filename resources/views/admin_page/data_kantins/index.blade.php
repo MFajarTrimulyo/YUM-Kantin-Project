@@ -16,7 +16,9 @@
             <thead>
                 <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100">
                     <th class="px-4 py-3 font-semibold rounded-tl-lg">ID</th>
+                    <th class="px-4 py-3 font-semibold">Foto Kantin</th>
                     <th class="px-4 py-3 font-semibold">Nama Kantin</th>
+                    <th class="px-4 py-3 font-semibold">Lokasi</th>
                     <th class="px-4 py-3 font-semibold text-center rounded-tr-lg">Aksi</th>
                 </tr>
             </thead>
@@ -25,7 +27,19 @@
                 @foreach($kantins as $kantin)
                 <tr class="hover:bg-gray-50/50 transition group">
                     <td class="px-4 py-3">{{ $kantin->id }}</td>
+                    <td class="px-4 py-3">
+                        <div class="w-32 h-32 rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
+                            @if($kantin->photo && file_exists(storage_path('app/public/' . $kantin->photo)))
+                                <img src="{{ asset('storage/' . $kantin->photo) }}" class="w-full h-full object-cover">
+                            @elseif($kantin->photo)
+                                <img src="{{ asset($kantin->photo) }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs">No Pic</div>
+                            @endif
+                        </div>
+                    </td>
                     <td class="px-4 py-3">{{ $kantin->nama}}</td>
+                    <td class="px-4 py-3">{{ $kantin->lokasi}}</td>
                     <td class="px-4 py-3 text-center">
                         <div class="flex items-center justify-center space-x-2">
                             <a href="{{ route('kantins.edit', $kantin->id) }}" class="p-2 bg-yellow-50 text-yellow-600 rounded-lg hover:bg-yellow-100 transition" title="Edit">

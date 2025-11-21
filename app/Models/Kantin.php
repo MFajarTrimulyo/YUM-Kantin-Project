@@ -12,7 +12,9 @@ class Kantin extends Model
 
     protected $fillable = [
         'id',
+        'photo',
         'nama',
+        'lokasi',
     ];
 
     public function gerais() {

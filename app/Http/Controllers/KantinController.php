@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kantin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class KantinController extends Controller
 {
@@ -12,7 +13,7 @@ class KantinController extends Controller
      */
     public function index()
     {
-        $kantins = Kantin::paginate(5);
+        $kantins = Kantin::paginate(10);
         return view('admin_page.data_kantins.index', compact('kantins'));
     }
 
@@ -30,11 +31,19 @@ class KantinController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255|unique:kategoris,nama',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama' => 'required|string|max:255|unique:kantins,nama',
+            'lokasi' => 'required|string|max:255',
         ]);
 
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('kantin_photos', 'public');
+        }
+
         Kantin::create([
+            'photo' => $photoPath,
             'nama' => $request->nama,
+            'lokasi' => $request->lokasi,
         ]);
 
         return redirect()->route('kantins.index')
@@ -56,13 +65,27 @@ class KantinController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama' => 'required|string|max:255|unique:kategoris,nama,'. $id,
+            'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama' => 'required|string|max:255|unique:kantins,nama,'. $id,
+            'lokasi' => 'required|string|max:255',
         ]);
 
         $kantin = Kantin::findOrFail($id);
-        $kantin->update([
-            'nama' => $request->nama
-        ]);
+
+        $data = [
+            'nama' => $request->nama,
+            'lokasi' => $request->lokasi
+        ];
+
+        if ($request->hasFile('photo')) {
+            // Hapus foto lama jika ada
+            if ($kantin->photo) {
+                Storage::disk('public')->delete($kantin->photo);
+            }
+            $data['photo'] = $request->file('photo')->store('kantin_photos', 'public');
+        }
+
+        $kantin->update($data);
 
         return redirect()->route('kantins.index')->with('success', 'Kantin berhasil diperbarui!');
     }
@@ -73,6 +96,10 @@ class KantinController extends Controller
     public function destroy($id)
     {
         $kantin = Kantin::findOrFail($id);
+        if ($kantin->photo) {
+            Storage::disk('public')->delete($kantin->photo);
+        }
+        
         $kantin->delete();
         
         return redirect()->route('kantins.index')->with('success', 'Kantin berhasil dihapus');

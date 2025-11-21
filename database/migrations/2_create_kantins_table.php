@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('kantins', function (Blueprint $table) {
             $table->id();
+            $table->string('photo')->nullable();
             $table->string('nama');
+            $table->string('lokasi')->nullable();
             $table->timestamps();
         });
     }
