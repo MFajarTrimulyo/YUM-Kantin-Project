@@ -9,9 +9,12 @@
         <p class="text-white/80 mb-8 text-sm md:text-base">Temukan menu favoritmu di sini.</p>
 
         <form action="{{ route('menu.index') }}" method="GET" class="max-w-2xl mx-auto">
-            {{-- Keep category if exists --}}
             @if(request('category'))
                 <input type="hidden" name="category" value="{{ request('category') }}">
+            @endif
+
+            @if(request('kantin'))
+                <input type="hidden" name="kantin" value="{{ request('kantin') }}">
             @endif
             
             <div class="flex w-full bg-white rounded-xl p-1.5 shadow-xl transform transition-all hover:scale-[1.01]">
@@ -52,11 +55,16 @@
 <div class="container mx-auto px-6 py-12">
     
     <div class="flex justify-between items-end mb-6">
-        <h2 class="text-xl font-bold text-gray-800 border-l-4 border-yum-yellow pl-3">
-            Daftar Menu {{ $currentCat != 'Semua' ? '- ' . $currentCat : '' }}
-        </h2>
-        <span class="text-xs text-gray-500">Menampilkan {{ $products->total() }} Menu</span>
-    </div>
+    <h2 class="text-xl font-bold text-gray-800 border-l-4 border-yum-yellow pl-3">
+        Daftar Menu 
+        {{-- Tampilkan Kategori --}}
+        {{ (request('category') && request('category') != 'Semua') ? '- ' . request('category') : '' }}
+        
+        {{-- Tampilkan Nama Kantin --}}
+        {{ isset($currentKantin) ? 'di ' . $currentKantin : '' }}
+    </h2>
+    <span class="text-xs text-gray-500">Menampilkan {{ $products->total() }} Menu</span>
+</div>
 
     @if($products->count() > 0)
         <div id="product-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
@@ -70,12 +78,11 @@
                 data-url="{{ route('menu.index') }}"
                 data-category="{{ request('category') }}"
                 data-search="{{ request('search') }}"
-                class="bg-white border-2 border-yum-primary text-yum-primary font-bold px-8 py-3 rounded-full hover:bg-yum-primary hover:text-white transition-all duration-300 shadow-md flex items-center gap-2">
+                data-kantin="{{ request('kantin') }}"
+
+                class="...">
                 <span>Muat Lebih Banyak</span>
-                <svg id="loading-spinner" class="animate-spin h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
+                ...
             </button>
         </div>
         @endif
@@ -109,6 +116,7 @@
             var url = btn.data('url');
             var category = btn.data('category');
             var search = btn.data('search');
+            var kantin = btn.data('kantin');
 
             // UI Changes
             btn.prop('disabled', true);
@@ -120,7 +128,8 @@
                 data: {
                     page: page,
                     category: category,
-                    search: search
+                    search: search,
+                    kantin: kantin
                 },
                 type: 'GET',
                 success: function(response) {

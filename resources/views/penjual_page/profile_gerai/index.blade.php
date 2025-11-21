@@ -47,6 +47,10 @@
             {{-- Section: Informasi Gerai --}}
             <div class="space-y-6">
                 
+                <div class="flex w-full justify-center">
+                    <img src="{{ asset('storage/' . $gerai->photo) }}" class="w-32 h-32 object-cover rounded-full border border-gray-200">
+                </div>
+                
                 {{-- Photo --}}
                 <div class="flex-1">
                     <label class="block text-sm font-bold text-gray-700 mb-2">Foto Gerai</label>

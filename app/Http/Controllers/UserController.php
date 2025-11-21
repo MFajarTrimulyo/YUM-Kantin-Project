@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kantin;
 use App\Models\Kategori;
 use App\Models\Produk;
 use Illuminate\Http\Request;
@@ -63,7 +64,7 @@ class UserController extends Controller
                 Storage::delete('public/' . $user->photo);
             }
 
-            $path = $request->file('photo')->store('photos', 'public');
+            $path = $request->file('photo')->store('profile_photos', 'public');
             
             $user->photo = $path;
         }
@@ -99,26 +100,51 @@ class UserController extends Controller
     {
         $query = Produk::with(['gerai', 'kategori'])->where('stok', '>', 0);
 
-        // Filter Search
+        // 1. Filter Search
         if ($request->has('search') && $request->search != null) {
             $query->where('nama', 'like', '%' . $request->search . '%');
         }
 
-        // Filter Category
+        // 2. Filter Category
         if ($request->has('category') && $request->category != 'Semua') {
             $query->whereHas('kategori', function($q) use ($request) {
                 $q->where('nama', $request->category);
             });
         }
 
+        // 3. Filter Kantin
+        if ($request->has('kantin') && $request->kantin != null) {
+            $query->whereHas('gerai', function($q) use ($request) {
+                $q->where('fk_kantin', $request->kantin);
+            });
+        }
+
         $products = $query->latest()->paginate(8);
         $kategoris = Kategori::all();
 
+        // Ambil Nama Kantin (Jika sedang difilter) untuk judul halaman
+        $currentKantin = null;
+        if($request->has('kantin')){
+            $kantinModel = \App\Models\Kantin::find($request->kantin);
+            if($kantinModel) $currentKantin = $kantinModel->nama_kantin; // Pastikan kolom di DB 'nama_kantin' atau 'nama'
+        }
+        
         // Handle AJAX Load More
         if ($request->ajax()) {
             return view('user_page.menu.product-list', compact('products'))->render();
         }
 
-        return view('user_page.menu.index', compact('products', 'kategoris'));
+        return view('user_page.menu.index', compact('products', 'kategoris', 'currentKantin'));
+    }
+
+    public function listKantin()
+    {
+        $kantins = Kantin::withCount('gerais')->get();
+        return view('user_page.kantin_list.index', compact('kantins'));
+    }
+
+    public function about()
+    {
+        return view('about_us');
     }
 }
