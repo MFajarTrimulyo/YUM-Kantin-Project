@@ -12,9 +12,11 @@ use App\Http\Controllers\AuthController;
 
 Route::redirect('/', 'home');
 
-// Home dan Menu Routes
+// Public Routes
 Route::get('/home', [UserController::class, 'home'])->name('home');
 Route::get('/menu', [UserController::class, 'menu'])->name('menu.index');
+Route::get('/kantins', [UserController::class, 'listKantin'])->name('kantin.list');
+Route::get('/about', [UserController::class, 'about'])->name('about');
 
 // Login dan Register Routes
 Route::middleware('guest')->group(function () {

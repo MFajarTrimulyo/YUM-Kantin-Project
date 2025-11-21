@@ -43,7 +43,7 @@
 
                     <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
                         <span class="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                            {{ $kantin->gerai_count }} Gerai Tersedia
+                            {{ $kantin->gerais_count }} Gerai Tersedia
                         </span>
                         
                         {{-- Tombol Lihat Menu --}}

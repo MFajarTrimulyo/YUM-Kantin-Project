@@ -125,7 +125,7 @@ class UserController extends Controller
         // Ambil Nama Kantin (Jika sedang difilter) untuk judul halaman
         $currentKantin = null;
         if($request->has('kantin')){
-            $kantinModel = \App\Models\Kantin::find($request->kantin);
+            $kantinModel = Kantin::find($request->kantin);
             if($kantinModel) $currentKantin = $kantinModel->nama_kantin; // Pastikan kolom di DB 'nama_kantin' atau 'nama'
         }
         

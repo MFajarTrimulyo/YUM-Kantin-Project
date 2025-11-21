@@ -11,7 +11,7 @@
                 Solusi Cerdas <br> <span class="text-yum-yellow">Kantin Kampus</span>
             </h1>
             <p class="text-gray-600 text-lg leading-relaxed mb-8">
-                YUM (Your University Meal) adalah platform digital yang dirancang khusus untuk mempermudah civitas akademika Universitas Negeri Malang dalam memesan makanan di kantin tanpa antre.
+                YUM adalah platform digital yang dirancang khusus untuk mempermudah civitas akademika Universitas Negeri Malang dalam memesan makanan di kantin tanpa antre.
             </p>
             
             <div class="flex gap-4">
@@ -55,7 +55,8 @@
                 <h3 class="text-xl font-bold text-gray-800">Muhammad Fajar</h3>
                 <p class="text-yum-primary font-medium text-sm mb-4">Mahasiswa Universitas Negeri Malang</p>
                 <p class="text-gray-500 text-sm">
-                    Mengembangkan sistem pemesanan kantin berbasis website untuk mempermudah akses kuliner di lingkungan kampus.
+                    S1 Pendidikan Teknik Informatika <br>
+                    Departemen Teknik Elektro dan Informatika
                 </p>
             </div>
         </div>

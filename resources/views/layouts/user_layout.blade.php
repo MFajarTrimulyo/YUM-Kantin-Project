@@ -153,7 +153,7 @@
                 <h3 class="text-lg font-bold mb-4 text-yum-yellow">Navigasi</h3>
                 <ul class="space-y-2 text-white/80">
                     <li><a href="{{ route('home') }}" class="hover:text-white hover:underline">Home</a></li>
-                    <li><a href="{{ route('menu.index') }}" class="hover:text-white hover:underline">List Menu</a></li>
+                    <li><a href="{{ route('menu.index') }}" class="hover:text-white hover:underline">Daftar Menu</a></li>
                     <li><a href="{{ route('kantin.list') }}" class="hover:text-white hover:underline">Jelajahi Kantin UM</a></li>
                     <li><a href="{{ route('about') }}" class="hover:text-white hover:underline">Tentang Kami</a></li>
                 </ul>
