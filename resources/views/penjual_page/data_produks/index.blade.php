@@ -40,32 +40,34 @@
                 <tr class="hover:bg-gray-50/50 transition group">
                     {{-- Foto & Nama --}}
                     <td class="px-4 py-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
-                                @if($produk->photo)
-                                    <img src="{{ asset('storage/' . $produk->photo) }}" class="w-full h-full object-cover">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs">No Pic</div>
-                                @endif
-                            </div>
-                            
-                            <div>
-                                <div class="font-bold text-gray-800">{{ $produk->nama }}</div>
+                        <a href="{{ route('menu.show', ['gerai_slug' => $produk->gerai->slug, 'produk_slug' => $produk->slug]) }}">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
+                                        @if($produk->photo)
+                                            <img src="{{ asset('storage/' . $produk->photo) }}" class="w-full h-full object-cover">
+                                        @else
+                                            <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs">No Pic</div>
+                                        @endif
+                                </div>
                                 
-                                {{-- List Rasa --}}
-                                @if($produk->pilihan_rasa)
-                                    <div class="flex flex-wrap gap-1 mt-1">
-                                        @foreach(explode(',', $produk->pilihan_rasa) as $rasa)
-                                            <span class="bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded border border-gray-200">
-                                                {{ trim($rasa) }}
-                                            </span>
-                                        @endforeach
-                                    </div>
-                                @else
-                                    <div class="text-xs text-gray-400 line-clamp-1">{{ $produk->deskripsi }}</div>
-                                @endif
+                                <div>
+                                    <div class="font-bold text-gray-800">{{ $produk->nama }}</div>
+                                    
+                                    {{-- List Rasa --}}
+                                    @if($produk->pilihan_rasa)
+                                        <div class="flex flex-wrap gap-1 mt-1">
+                                            @foreach(explode(',', $produk->pilihan_rasa) as $rasa)
+                                                <span class="bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded border border-gray-200">
+                                                    {{ trim($rasa) }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="text-xs text-gray-400 line-clamp-1">{{ $produk->deskripsi }}</div>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </td>
 
                     {{-- Kategori --}}

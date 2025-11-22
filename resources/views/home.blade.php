@@ -78,11 +78,14 @@
         <h2 class="text-center text-white text-3xl font-bold mb-10">Lagi ada <span class="text-yum-yellow">diskon</span> khusus buat kamu!</h2>
         
         {{-- Slider Container --}}
-        <div class="flex overflow-x-auto space-x-6 pb-8 snap-x snap-mandatory scroll-smooth no-scrollbar px-4">
+        <div class="flex overflow-x-auto space-x-6 py-4 snap-x snap-mandatory scroll-smooth no-scrollbar px-4">
             
             @foreach ($promoProduks as $product)
             <div class="snap-start shrink-0 w-48 md:w-56"> 
                 <div class="bg-white rounded-xl p-3 shadow-lg hover:-translate-y-1 transition duration-300 h-full flex flex-col">
+                    
+                    <a href="{{ route('menu.show', ['gerai_slug' => $product->gerai->slug, 'produk_slug' => $product->slug]) }}" class="absolute inset-0 z-10"></a>
+                    
                     <div class="relative rounded-lg overflow-hidden mb-3 aspect-square bg-gray-100">
                         @if($product->photo)
                             <img src="{{ asset('storage/' . $product->photo) }}" class="w-full h-full object-cover">
@@ -145,6 +148,7 @@
             <div class="flex overflow-x-auto space-x-4 pb-4 snap-x snap-mandatory scroll-smooth no-scrollbar">
                 @foreach ($popularProduks as $product) 
                 <div class="snap-start shrink-0 w-48 md:w-52">
+                    <a href="{{ route('menu.show', ['gerai_slug' => $product->gerai->slug, 'produk_slug' => $product->slug]) }}">
                     <div class="bg-white rounded-xl p-3 border border-gray-200 hover:border-yum-primary transition duration-300 group h-full flex flex-col">
                         
                         <div class="overflow-hidden rounded-lg mb-3 relative aspect-video bg-gray-50">
@@ -172,6 +176,7 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 @endforeach
             </div>

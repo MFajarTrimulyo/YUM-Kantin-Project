@@ -173,5 +173,15 @@
             openCheckoutModal();
         });
     @endif
+
+    @if(session('open_checkout_modal'))
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                openCheckoutModal();
+            }, 500);
+        });
+    @endif
 </script>
+
+
 @endsection

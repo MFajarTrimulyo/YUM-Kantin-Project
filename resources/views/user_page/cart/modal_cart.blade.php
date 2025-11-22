@@ -57,7 +57,7 @@
                             <div id="modal-rasa-container" class="mb-6 hidden">
                                 <label class="block text-sm font-bold text-gray-700 mb-2">Pilih Varian / Rasa</label>
                                 <div id="modal-rasa-options" class="flex flex-wrap gap-2">
-                                    </div>
+                                </div>
                             </div>
 
                             <!-- Counter Qty -->
@@ -65,7 +65,7 @@
                                 <span class="font-bold text-gray-700 text-sm">Jumlah Pesanan</span>
                                 <div class="flex items-center gap-4">
                                     <button type="button" onclick="updateQty(-1)" class="w-8 h-8 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-yum-primary hover:text-white hover:border-yum-primary transition flex items-center justify-center font-bold">-</button>
-                                    <input type="number" name="qty" id="modal-qty" value="1" min="1" class="w-12 text-center bg-transparent font-bold text-gray-800 focus:outline-none" readonly>
+                                    <input type="number" name="qty" id="modal-qty" value="1" min="1" class="w-fit pl-4 text-center bg-transparent font-bold text-gray-800 focus:outline-none" readonly>
                                     <button type="button" onclick="updateQty(1)" class="w-8 h-8 rounded-full bg-white border border-gray-300 text-gray-600 hover:bg-yum-primary hover:text-white hover:border-yum-primary transition flex items-center justify-center font-bold">+</button>
                                 </div>
                             </div>
@@ -105,8 +105,6 @@
 
     function openCartModal(product) {
         // 1. Set Action URL Form
-        // Ganti 'ID_PLACEHOLDER' dengan ID produk yang diklik
-        // Route di Laravel: route('cart.add', ['id' => ...])
         form.action = "/cart/add/" + product.id; 
 
         // 2. Isi Data Modal
@@ -160,7 +158,7 @@
             variants.forEach((variant, index) => {
                 variant = variant.trim(); // Hapus spasi
                 
-                // Buat Radio Button Style Button
+                // Wrapper Div
                 const wrapper = document.createElement('div');
                 
                 // Input Radio (Hidden)
@@ -170,12 +168,28 @@
                 radio.value = variant;
                 radio.id = 'rasa-' + index;
                 radio.className = 'peer sr-only'; // Sembunyikan dot radio asli
-                if(index === 0) radio.checked = true; // Pilih opsi pertama otomatis
+                
+                // Auto-select opsi pertama
+                if(index === 0) radio.checked = true; 
 
-                // Label (Tampilan Button)
+                // Label (Tampilan Tombol Pill Shape)
                 const label = document.createElement('label');
                 label.htmlFor = 'rasa-' + index;
-                label.className = 'cursor-pointer px-4 py-2 rounded-lg border border-gray-200 bg-white text-sm text-gray-600 hover:bg-gray-50 peer-checked:border-yum-primary peer-checked:bg-yum-primary/10 peer-checked:text-yum-primary peer-checked:font-bold transition select-none';
+                
+                // Class CSS Updated: Rounded-full, Border-2, Solid Color on Checked
+                label.className = `
+                    cursor-pointer 
+                    px-6 py-2 
+                    rounded-full 
+                    border-2 border-gray-200 
+                    bg-white 
+                    text-sm font-bold text-gray-500 
+                    transition select-none
+                    hover:border-yum-primary hover:text-yum-primary
+                    peer-checked:bg-yum-primary peer-checked:text-white peer-checked:border-yum-primary
+                    peer-checked:shadow-md
+                `;
+                
                 label.innerText = variant;
 
                 wrapper.appendChild(radio);
@@ -184,7 +198,7 @@
             });
 
         } else {
-            // Sembunyikan jika produk tidak punya varian
+            // Sembunyikan container jika produk tidak punya varian
             rasaContainer.classList.add('hidden');
         }
 

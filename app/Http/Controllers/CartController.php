@@ -65,6 +65,12 @@ class CartController extends Controller
         }
 
         session()->put('cart', $cart);
+
+        if ($request->input('action') == 'checkout') {
+            // Jika klik "Pesan Sekarang", lempar ke cart dengan sinyal buka modal
+            return redirect()->route('cart.index')->with('open_checkout_modal', true);
+        }
+        
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
 

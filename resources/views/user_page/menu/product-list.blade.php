@@ -19,7 +19,11 @@
             </div>
         @endif
         
-        <a href="{{-- route('menu.show', $product->id) --}}" class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center cursor-pointer">
+        <a href="{{ route('menu.show', [
+                    'gerai_slug' => $product->gerai->slug, 
+                    'produk_slug' => $product->slug]) 
+                }}" 
+            class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center cursor-pointer">
             <span class="bg-white text-yum-primary font-bold py-2 px-4 rounded-full shadow-lg text-xs transform translate-y-4 group-hover:translate-y-0 transition duration-300">
                 Lihat Produk
             </span>
@@ -34,18 +38,20 @@
                 {{ $product->terjual ?? 0 }}+ Terjual
             </span>
             <div class="flex flex-col space-y-0.5">
-                <span class="bg-gray-100 px-1.5 rounded text-gray-500 truncate max-w-[75%]">
+                <span class="bg-gray-100 px-1.5 rounded text-gray-500 truncate w-fit">
                     {{ $product->gerai->kantin->nama ?? 'Kantin' }}
                 </span>
-                <span class="bg-gray-100 px-1.5 rounded text-gray-500 truncate">
+                <span class="bg-gray-100 px-1.5 rounded text-gray-500 truncate w-fit">
                     {{ $product->gerai->nama ?? 'Gerai' }}
                 </span>
             </div>
         </div>
         
-        <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 leading-tight group-hover:text-yum-primary transition" title="{{ $product->nama }}">
-            {{ $product->nama }}
-        </h3>
+        <a href="{{ route('menu.show', ['gerai_slug' => $product->gerai->slug, 'produk_slug' => $product->slug]) }}">
+            <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 leading-tight group-hover:text-yum-primary transition" title="{{ $product->nama }}">
+                {{ $product->nama }}
+            </h3>
+        </a>
 
         {{-- Rasa --}}
         @if($product->pilihan_rasa)
