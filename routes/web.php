@@ -8,6 +8,7 @@ use App\Http\Controllers\KantinController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\RekeningController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
@@ -44,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/become-seller', [UserController::class, 'jadi_penjual'])->name('become.seller');
 
     
+
     // Admin and Seller Routes
     Route::middleware(['hak.akses:admin,penjual'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -51,6 +53,8 @@ Route::middleware(['auth'])->group(function () {
         // Laporan Penjualan Routes
         Route::get('{role}/laporan', [DetailPemesananController::class, 'index'])->name('laporan.index');
     });
+
+
 
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -62,6 +66,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Orders (Riwayat)
     Route::get('/{username}/my-order', [PemesananController::class, 'order_user'])->name('pemesanan.user.index');
+
+
 
     // Admin Routes
     Route::middleware(['hak.akses:admin'])->prefix('/admin')->group(function () {
@@ -86,6 +92,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/gerais/{id}/verify', [AdminController::class, 'verifyGerai'])->name('admin.gerai.verify');
         Route::delete('/gerais/{id}', [AdminController::class, 'destroyGerai'])->name('admin.gerai.destroy');
 
+        // Rekening Routes
+        Route::get('/rekenings', [RekeningController::class, 'index'])->name('admin.rekenings.index');
+        Route::get('/rekenings/create', [RekeningController::class, 'create'])->name('admin.rekenings.create');
+        Route::post('/rekenings', [RekeningController::class, 'store'])->name('admin.rekenings.store');
+        Route::get('/rekenings/{id}/edit', [RekeningController::class, 'edit'])->name('admin.rekenings.edit');
+        Route::put('/rekenings/{id}', [RekeningController::class, 'update'])->name('admin.rekenings.update');
+        Route::delete('/rekenings/{id}', [RekeningController::class, 'destroy'])->name('admin.rekenings.destroy');
         // Route Monitoring Pesanan
         Route::get('/orders', [AdminController::class, 'orders'])->name('admin.pemesanans.index');
     });
