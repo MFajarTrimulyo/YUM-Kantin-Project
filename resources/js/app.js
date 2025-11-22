@@ -2,8 +2,12 @@ import './bootstrap';
 
 import $ from 'jquery';
 import Swal from 'sweetalert2';
+import Chart from 'chart.js/auto';
 // import DataTable from 'datatables.net-dt';
+
+
 window.$ = window.jQuery = $;
+window.Chart = Chart;
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -220,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+    
     // ==========================================
     // 8. SWEETALERT
     // ==========================================

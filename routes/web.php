@@ -106,6 +106,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/orders', [PemesananController::class, 'index'])->name('penjual.pemesanan.index');
         Route::patch('/orders/{id}', [PemesananController::class, 'updateStatus'])->name('penjual.pemesanan.update');
     });
+
+    // Laporan Penjualan Routes
+    Route::middleware(['hak.akses:admin,penjual', 'has.gerai'])->group(function () {
+        Route::get('{role}/laporan', [DetailPemesananController::class, 'index'])->name('laporan.index');
+    });
 });
 
 

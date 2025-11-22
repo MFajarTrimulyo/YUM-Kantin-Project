@@ -31,4 +31,9 @@ class DetailPemesanan extends Model
     public function produk() {
         return $this->belongsTo(Produk::class, 'fk_produk');
     }
+
+    // Relasi balik ke Pemesanan
+    public function pemesanan() {
+        return $this->belongsTo(Pemesanan::class, 'fk_order');
+    }
 }
