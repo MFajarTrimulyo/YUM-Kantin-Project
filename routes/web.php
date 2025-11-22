@@ -66,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Orders (Riwayat)
     Route::get('/{username}/my-order', [PemesananController::class, 'order_user'])->name('pemesanan.user.index');
-
+    Route::patch('/{username}/my-order/cancel', [PemesananController::class, 'cancelByUser'])->name('pemesanan.user.cancel');
 
 
     // Admin Routes

@@ -96,7 +96,7 @@
                 <tbody class="divide-y divide-gray-100">
                     @forelse($laporan as $data)
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-3 font-mono font-bold">#{{ substr($data->id, -5) }}</td>
+                        <td class="px-6 py-3 font-mono font-bold">#{{ substr($data->id, -6) }}</td>
                         <td class="px-6 py-3">{{ $data->created_at->format('d/m/Y H:i') }}</td>
                         
                         @if(Auth::user()->role == 'admin') 

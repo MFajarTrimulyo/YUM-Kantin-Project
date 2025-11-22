@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PemesananController extends Controller
 {
+    // Menampilkan daftar pesanan untuk penjual dengan tab filtering
     public function index(Request $request)
     {
         $geraiId = Auth::user()->gerai->id;
@@ -39,6 +40,7 @@ class PemesananController extends Controller
         return view('penjual_page.data_pesanans.index', compact('orders', 'status', 'counts'));
     }
 
+    // Update Status Pesanan oleh Penjual
     public function updateStatus(Request $request, $id)
     {
         // Eager load detail pemesanan agar bisa akses produknya
@@ -98,6 +100,7 @@ class PemesananController extends Controller
         }
     }
 
+    // Menampilkan daftar pesanan untuk user
     public function order_user()
     {
         $orders = Pemesanan::where('fk_user', Auth::id())
@@ -106,6 +109,47 @@ class PemesananController extends Controller
                         ->get();
 
         return view('user_page.orders.index', compact('orders'));
+    }
+
+    // Batalkan Pesanan oleh User
+    public function cancelByUser($id)
+    {
+        // 1. Cari Pesanan (Pastikan milik user yang sedang login)
+        $order = Pemesanan::where('id', $id)
+                    ->where('fk_user', Auth::id())
+                    ->firstOrFail();
+
+        // 2. Validasi: Hanya boleh cancel jika status masih 'pending'
+        if ($order->status != 'pending') {
+            return redirect()->back()->with('error', 'Pesanan tidak dapat dibatalkan karena sudah diproses.');
+        }
+
+        DB::beginTransaction();
+        try {
+            // 3. Kembalikan Stok (Restock)
+            foreach ($order->detail_pemesanans as $detail) {
+                if ($detail->produk) {
+                    $detail->produk->increment('stok', $detail->qty);
+                    
+                    // Opsional: Kurangi counter terjual
+                    if ($detail->produk->terjual >= $detail->qty) {
+                        $detail->produk->decrement('terjual', $detail->qty);
+                    }
+                }
+            }
+
+            // 4. Update Status
+            $order->update([
+                'status' => 'cancelled'
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Pesanan berhasil dibatalkan.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal membatalkan pesanan: ' . $e->getMessage());
+        }
     }
 
 }
