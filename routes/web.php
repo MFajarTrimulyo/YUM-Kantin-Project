@@ -46,7 +46,6 @@ Route::middleware(['auth'])->group(function () {
     // Admin and Seller Routes
     Route::middleware(['hak.akses:admin,penjual'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-        Route::get('/laporan', [DetailPemesananController::class, 'index'])->name('detail.index');
     });
 
     // Cart
@@ -82,6 +81,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/gerais', [AdminController::class, 'gerai'])->name('admin.gerai.index');
         Route::post('/gerais/{id}/verify', [AdminController::class, 'verifyGerai'])->name('admin.gerai.verify');
         Route::delete('/gerais/{id}', [AdminController::class, 'destroyGerai'])->name('admin.gerai.destroy');
+
+        // Route Monitoring Pesanan
+        Route::get('/orders', [AdminController::class, 'orders'])->name('admin.pemesanans.index');
     });
 
 
