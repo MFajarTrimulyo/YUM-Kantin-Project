@@ -16,15 +16,34 @@
                 <form action="{{ route('cart.checkout') }}" method="POST" enctype="multipart/form-data" class="p-6">
                     @csrf
                     
-                    {{-- Info Rekening --}}
+                    {{-- Info Rekening Dinamis --}}
                     <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-6 text-center">
                         <p class="text-sm text-blue-600 mb-1">Silakan transfer sebesar:</p>
-                        <p class="text-2xl font-bold text-blue-800 mb-3">Rp {{ number_format($total, 0, ',', '.') }}</p>
+                        <p class="text-2xl font-bold text-blue-800 mb-4">Rp {{ number_format($total, 0, ',', '.') }}</p>
                         
-                        <div class="bg-white p-3 rounded-lg border border-blue-100 inline-block w-full">
-                            <p class="text-xs text-gray-500 uppercase font-bold">Bank BRI (Admin YUM)</p>
-                            <p class="text-lg font-mono font-bold text-gray-800 tracking-wider">1234-5678-9012-3456</p>
-                            <p class="text-xs text-gray-400 mt-1">a.n. YUM Official</p>
+                        <p class="text-xs text-gray-500 mb-2">Ke salah satu rekening berikut:</p>
+
+                        <div class="space-y-2 max-h-76 overflow-y-auto pr-1 no-scrollbar">
+                            @foreach($rekenings as $bank)
+                                <div class="bg-white p-3 rounded-lg border border-blue-200 text-left flex justify-between items-center shadow-sm hover:shadow-md transition">
+                                    <div>
+                                        <p class="text-[10px] text-gray-500 uppercase font-bold">{{ $bank->nama_bank }}</p>
+                                        <div class="flex items-center gap-2">
+                                            <p class="text-md font-mono font-bold text-gray-800 tracking-wide" id="rek-{{ $loop->index }}">
+                                                {{ $bank->nomor_rekening }}
+                                            </p>
+                                            {{-- Tombol Copy (Opsional, Fitur Keren) --}}
+                                            <button type="button" onclick="copyToClipboard('rek-{{ $loop->index }}')" class="text-blue-400 hover:text-blue-600" title="Salin">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                            </button>
+                                        </div>
+                                        <p class="text-xs text-gray-400 mt-0.5">a.n. {{ $bank->atas_nama }}</p>
+                                    </div>
+                                    <div class="h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
 

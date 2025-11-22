@@ -217,7 +217,14 @@
         let newVal = parseInt(qtyInput.value) + change;
         if(newVal < 1) newVal = 1;
         // Opsional: Batasi max sesuai stok
-        // if(newVal > currentStock) newVal = currentStock; 
+        
         qtyInput.value = newVal;
+    }
+
+    function copyToClipboard(elementId) {
+        const text = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Nomor rekening berhasil disalin!");
+        });
     }
 </script>

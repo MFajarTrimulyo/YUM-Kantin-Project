@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DetailPemesanan;
 use App\Models\Pemesanan;
+use App\Models\Rekening;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,9 @@ class CartController extends Controller
         
         $total = $subtotal;
 
-        return view('user_page.cart.index', compact('cart', 'subtotal', 'total'));
+        $rekenings = Rekening::where('is_active', true)->get();
+
+        return view('user_page.cart.index', compact('cart', 'subtotal', 'total', 'rekenings'));
     }
 
     // Add to Cart
