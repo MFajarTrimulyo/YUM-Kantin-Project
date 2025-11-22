@@ -94,7 +94,7 @@
             <tbody class="divide-y divide-gray-100">
                 @forelse($data['recent_orders'] as $order)
                 <tr class="hover:bg-gray-50 transition-colors">
-                    <td class="px-6 py-4 font-medium text-gray-900 font-mono">#{{ substr($order->id, -5) }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 font-mono">#{{ substr($order->id, -6) }}</td>
                     <td class="px-6 py-4">{{ $order->user->nama }}</td>
                     
                     @if(Auth::user()->role == 'admin')

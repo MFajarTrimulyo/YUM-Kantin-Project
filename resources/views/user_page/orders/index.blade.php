@@ -10,7 +10,7 @@
         </div>
     @endif
 
-    @if($orders->count() > 0)
+    @if(count($orders) > 0)
         <div class="space-y-6">
             @foreach($orders as $order)
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition">
@@ -102,10 +102,27 @@
 
                 {{-- Footer Card: Total --}}
                 <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-between items-center">
-                    <span class="text-sm font-bold text-gray-500">Total Pesanan</span>
-                    <span class="text-xl font-bold text-yum-primary">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</span>
-                </div>
+                    
+                    {{-- Kiri: Total Harga --}}
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-gray-500">Total Pesanan</span>
+                        <span class="text-xl font-bold text-yum-primary">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</span>
+                    </div>
 
+                    {{-- Kanan: Tombol Aksi (Hanya jika Pending) --}}
+                    @if($order->status == 'pending')
+                        <form action="{{ route('pemesanan.user.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?')">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-100 transition shadow-sm flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                Batalkan Pesanan
+                            </button>
+                        </form>
+                    @elseif($order->status == 'cancelled')
+                        <span class="text-xs font-bold text-red-400 italic">Dibatalkan</span>
+                    @endif
+                </div>
             </div>
             @endforeach
         </div>
