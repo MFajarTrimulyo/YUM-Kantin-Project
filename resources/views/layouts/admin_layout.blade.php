@@ -109,6 +109,8 @@
                                     @endif
                                 </a>
                             </li>
+
+                            <hr class="text-gray-300">
                         @endif
 
 
@@ -157,7 +159,6 @@
                             </li>
 
                             @endif
-                            
                             <!-- Laporan -->
                             <li>
                                 <a href="{{ route('laporan.index', Auth::user()->role) }}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yum-primary rounded-lg font-medium transition-colors">

@@ -4,13 +4,78 @@ namespace App\Http\Controllers;
 
 use App\Models\Gerai;
 use App\Models\Pemesanan;
+use App\Models\Produk;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin_page.dashboard');
+        $user = Auth::user();
+        $data = [];
+
+        if ($user->role == 'admin') {
+            // --- ADMIN ---
+            
+            // Card 1: Total Pendapatan (Semua Gerai)
+            $data['revenue'] = Pemesanan::where('status', 'completed')->sum('total_harga');
+            
+            // Card 2: Total Transaksi
+            $data['orders_count'] = Pemesanan::count();
+
+            // Card 3: Total Gerai (Admin Only)
+            $data['card3_label'] = 'Total Gerai';
+            $data['card3_value'] = Gerai::count();
+            $data['card3_type']  = 'gerai'; // Untuk pembeda icon di view
+
+            // Card 4: Total User Registered
+            $data['card4_label'] = 'Total User';
+            $data['card4_value'] = User::where('role', 'user')->count();
+            $data['card4_type']  = 'user';
+
+            // Tabel: 5 Pesanan Terakhir (Global)
+            $data['recent_orders'] = Pemesanan::with(['user', 'gerai'])
+                                        ->latest()
+                                        ->take(5)
+                                        ->get();
+
+        } else {
+            // --- PENJUAL ---
+            
+            // Cek apakah sudah punya gerai
+            if (!$user->gerai) {
+                return redirect()->route('gerai.create')->with('warning', 'Silakan buat gerai terlebih dahulu.');
+            }
+            
+            $geraiId = $user->gerai->id;
+
+            // Card 1: Total Pendapatan Gerai Ini
+            $data['revenue'] = Pemesanan::where('fk_gerai', $geraiId)->where('status', 'completed')->sum('total_harga');
+            
+            // Card 2: Total Pesanan
+            $data['orders_count'] = Pemesanan::where('fk_gerai', $geraiId)->count();
+
+            // Card 3: Menu Aktif (Stok > 0)
+            $data['card3_label'] = 'Menu Terdaftar';
+            $data['card3_value'] = Produk::where('fk_gerai', $geraiId)->where('stok', '>', 0)->count();
+            $data['card3_type']  = 'menu';
+
+            // Card 4: Pesanan Pending (Butuh Tindakan)
+            $data['card4_label'] = 'Pesanan Baru';
+            $data['card4_value'] = Pemesanan::where('fk_gerai', $geraiId)->where('status', 'pending')->count();
+            $data['card4_type']  = 'pending';
+
+            // Tabel: 5 Pesanan Terakhir Gerai Ini
+            $data['recent_orders'] = Pemesanan::where('fk_gerai', $geraiId)
+                                        ->with(['user', 'detail_pemesanans.produk'])
+                                        ->latest()
+                                        ->take(5)
+                                        ->get();
+        }
+
+        return view('admin_page.dashboard', compact('data'));
     }
 
     // 1. Tampilkan Daftar Gerai
