@@ -24,6 +24,8 @@ return new class extends Migration
 
             $table->decimal('total_harga', 12, 2);
             $table->enum('status', ['pending', 'cooking', 'ready', 'completed', 'cancelled']);
+
+            $table->string('bukti_bayar')->nullable();
             $table->enum('status_bayar', ['unpaid', 'paid']);
             $table->timestamps();
         });

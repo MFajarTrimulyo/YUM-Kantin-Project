@@ -88,12 +88,8 @@
                             My Profile
                         </a>
                         
-                        <a href="{{ route('pemesanan.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
+                        <a href="{{ route('pemesanan.user.index', ['username' => Auth::user()->username]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
                             Pesanan Saya
-                        </a>
-
-                        <a href="{{-- route('order.history') --}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yum-primary" role="menuitem">
-                            History Pesanan
                         </a>
 
                         <hr class="text-gray-300">

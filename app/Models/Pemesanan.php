@@ -18,6 +18,7 @@ class Pemesanan extends Model
         'fk_gerai', 
         'total_harga', 
         'status', 
+        'bukti_bayar',
         'status_bayar'
     ];
 

@@ -15,6 +15,13 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
+            <strong class="font-bold">Oops!</strong>
+            <span class="block sm:inline">{{ session('error') }}</span>
+        </div>
+    @endif
+
     @if(count($cart) > 0)
         <div class="flex flex-col lg:flex-row gap-8">
             
@@ -106,12 +113,9 @@
                         <span class="text-xl font-bold text-yum-primary">Rp {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
 
-                    <form action="{{ route('cart.checkout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="w-full bg-yum-primary text-white font-bold py-3 px-4 rounded-xl shadow-md hover:bg-yum-dark transition transform hover:-translate-y-1">
-                            Checkout Sekarang
-                        </button>
-                    </form>
+                    <button type="button" onclick="openCheckoutModal()" class="w-full bg-yum-primary text-white font-bold py-3 px-4 rounded-xl shadow-md hover:bg-yum-dark transition transform hover:-translate-y-1">
+                        Checkout Sekarang
+                    </button>
                     
                     <p class="text-xs text-gray-400 text-center mt-4">
                         Dengan checkout, pesanan akan diteruskan ke masing-masing gerai.
@@ -132,4 +136,42 @@
         </div>
     @endif
 </div>
+
+{{-- MODAL CHECKOUT --}}
+@include('user_page.cart.modal_checkout')
+
+<script>
+    const checkoutModal = document.getElementById('checkout-modal');
+
+    function openCheckoutModal() {
+        checkoutModal.classList.remove('hidden');
+    }
+
+    function closeCheckoutModal() {
+        checkoutModal.classList.add('hidden');
+    }
+
+    function previewImage(input) {
+    const container = document.getElementById('image-preview-container');
+    const preview = document.getElementById('image-preview');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            container.classList.remove('hidden');
+        }
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        container.classList.add('hidden');
+    }
+}
+
+    // Cek apakah ada error validasi dari Laravel? Jika ya, buka modal otomatis.
+    @if($errors->any() || session('error_checkout'))
+        document.addEventListener("DOMContentLoaded", function() {
+            openCheckoutModal();
+        });
+    @endif
+</script>
 @endsection

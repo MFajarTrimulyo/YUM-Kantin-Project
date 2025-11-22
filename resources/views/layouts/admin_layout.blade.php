@@ -127,12 +127,22 @@
 
                         <!-- Pesanan Masuk -->
                         <li>
-                            <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yum-primary rounded-lg font-medium transition-colors justify-between">
+                            <a href="{{ route('penjual.pemesanan.index') }}" class="flex items-center px-4 py-3 
+                                {{ request()->routeIs('penjual.pemesanan.index') ? 'bg-yum-primary/10 text-yum-primary font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-yum-primary font-medium'}} 
+                                rounded-lg transition-colors justify-between">
+                                
                                 <div class="flex items-center">
                                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                                     Pesanan
                                 </div>
-                                <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3</span>
+                                
+                                @php
+                                    $pendingCount = \App\Models\Pemesanan::where('fk_gerai', Auth::user()->gerai->id ?? 0)->where('status', 'pending')->count();
+                                @endphp
+                                
+                                @if($pendingCount > 0)
+                                    <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ $pendingCount }}</span>
+                                @endif
                             </a>
                         </li>
 

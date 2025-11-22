@@ -10,7 +10,7 @@
         </div>
     @endif
 
-    @if($orders)
+    @if($orders->count() > 0)
         <div class="space-y-6">
             @foreach($orders as $order)
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition">
@@ -20,7 +20,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="font-bold text-gray-800 text-lg">{{ $order->gerai->nama ?? 'Gerai Tidak Ditemukan' }}</span>
-                            <span class="text-xs text-gray-400">#{{ $order->id }}</span>
+                            <span class="text-xs text-gray-400">#{{ substr($order->id, -5) }}</span>
                         </div>
                         <p class="text-xs text-gray-500">{{ $order->created_at->format('d M Y, H:i') }} WIB</p>
                     </div>
@@ -49,12 +49,24 @@
                             {{ $statusLabel }}
                         </span>
 
-                        {{-- Badge Status Bayar --}}
-                        @if($order->status_bayar == 'paid')
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">Lunas</span>
-                        @else
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-100">Belum Bayar</span>
-                        @endif
+                        {{-- Badge Status Bayar & Tombol Bukti --}}
+                        <div class="flex items-center gap-2">
+                            @if($order->status_bayar == 'paid')
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">Lunas</span>
+                            @else
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-100">Unpaid</span>
+                            @endif
+
+                            {{-- TOMBOL LIHAT BUKTI (BARU) --}}
+                            @if($order->bukti_bayar)
+                                <button onclick="showBukti('{{ asset('storage/' . $order->bukti_bayar) }}')" 
+                                    class="text-[10px] bg-white text-gray-600 px-2 py-1 rounded border border-gray-300 hover:bg-gray-50 transition flex items-center gap-1"
+                                    title="Lihat Bukti Transfer">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    Bukti
+                                </button>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
@@ -75,6 +87,9 @@
                                 <div>
                                     <p class="font-bold text-gray-800 text-sm">{{ $detail->produk->nama ?? 'Produk Dihapus' }}</p>
                                     <p class="text-xs text-gray-500">{{ $detail->qty }} x Rp {{ number_format($detail->harga_satuan_saat_beli, 0, ',', '.') }}</p>
+                                    @if($detail->catatan)
+                                        <p class="text-[10px] text-gray-400 italic">Catatan: {{ $detail->catatan }}</p>
+                                    @endif
                                 </div>
                             </div>
                             <span class="font-semibold text-gray-700 text-sm">
@@ -107,4 +122,33 @@
         </div>
     @endif
 </div>
+
+{{-- MODAL BUKTI BAYAR (Hidden by default) --}}
+<div id="modal-bukti" class="fixed inset-0 z-9999 hidden items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity" onclick="closeBukti()">
+    <div class="relative max-w-lg w-full p-4 transform transition-all scale-100">
+        <button onclick="closeBukti()" class="absolute -top-2 -right-2 bg-white rounded-full p-2 text-gray-800 hover:bg-gray-200 shadow-lg z-10 border border-gray-200">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        
+        <img id="img-bukti" src="" class="w-full h-auto max-h-[80vh] object-contain rounded-lg shadow-2xl border border-white/20 bg-black">
+        <p class="text-center text-white/80 mt-2 text-sm">Bukti Pembayaran Anda</p>
+    </div>
+</div>
+
+{{-- SCRIPT UNTUK MODAL --}}
+<script>
+    function showBukti(url) {
+        document.getElementById('img-bukti').src = url;
+        const modal = document.getElementById('modal-bukti');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeBukti() {
+        const modal = document.getElementById('modal-bukti');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+</script>
+
 @endsection

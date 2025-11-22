@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Produk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CartController extends Controller
@@ -81,21 +82,42 @@ class CartController extends Controller
     }
 
     // Checkout
-    public function checkout()
+    public function checkout(Request $request)
     {
         $cart = session()->get('cart');
 
-        dump($cart);
         if(!$cart) {
             return redirect()->back()->with('error', 'Keranjang kosong!');
         }
 
-        // 1. Kelompokkan Item berdasarkan Gerai ID
+        // 1. Validasi Bukti Bayar
+        $request->validate([
+            'bukti_bayar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'bukti_bayar.required' => 'Anda wajib mengupload bukti transfer.',
+            'bukti_bayar.image' => 'File harus berupa gambar.',
+            'bukti_bayar.max' => 'Ukuran file maksimal 2MB.'
+        ]);
+
+        // 2. Upload File
+        $buktiPath = null;
+        if ($request->hasFile('bukti_bayar')) {
+            $buktiPath = $request->file('bukti_bayar')->store('bukti_bayar', 'public');
+        }
+
+        // 3. Grouping Cart by Gerai
         $ordersByGerai = [];
         foreach($cart as $cartId => $details) {
+            // CEK DATA: Jika data keranjang lama (rusak), skip atau reset
+            if (!isset($details['fk_produk'])) {
+                session()->forget('cart'); // Hapus keranjang rusak
+                return redirect()->route('cart.index')
+                    ->with('error', 'Sistem diperbarui. Silakan masukkan ulang barang ke keranjang.');
+            }
+
             $geraiId = $details['gerai_id'];
             $ordersByGerai[$geraiId][] = [
-                'fk_produk' => $details['fk_produk'],
+                'product_id' => $details['fk_produk'],
                 'qty' => $details['qty'],
                 'harga' => $details['harga'],
                 'catatan' => $details['note'],
@@ -105,45 +127,64 @@ class CartController extends Controller
 
         DB::beginTransaction();
         try {
-            // Loop Utama: Per Gerai (Membuat Header Pesanan)
             foreach($ordersByGerai as $geraiId => $items) {
                 
-                // Hitung total per gerai
                 $totalPerGerai = 0;
                 foreach($items as $item) {
                     $totalPerGerai += $item['harga'] * $item['qty'];
                 }
 
-                // 2. Buat Record Pemesanan (Header)
+                // Create Header Pemesanan
                 $pemesanan = Pemesanan::create([
                     'fk_user' => Auth::id(),
                     'fk_gerai' => $geraiId,
                     'total_harga' => $totalPerGerai,
                     'status' => 'pending',
-                    'status_bayar' => 'unpaid'
+                    'status_bayar' => 'paid', // Asumsi paid menunggu verifikasi admin/penjual
+                    'bukti_bayar' => $buktiPath
                 ]);
 
-                // 3. Buat Record Detail Pemesanan (Items)
+                // Create Details & KURANGI STOK
                 foreach($items as $item) {
+                    
+                    // Ambil data produk terbaru untuk cek stok real-time
+                    $produk = Produk::lockForUpdate()->find($item['product_id']); // Lock row agar tidak bentrok
+
+                    if (!$produk) {
+                        throw new \Exception("Produk tidak ditemukan.");
+                    }
+
+                    // Cek apakah stok cukup
+                    if ($produk->stok < $item['qty']) {
+                        throw new \Exception("Stok untuk produk '{$produk->nama}' tidak mencukupi. Sisa stok: {$produk->stok}");
+                    }
+
+                    // A. Kurangi Stok
+                    $produk->decrement('stok', $item['qty']);
+                    // Update kolom terjual (Opsional, biar data statistik jalan)
+                    $produk->increment('terjual', $item['qty']);
+
+                    // B. Simpan Detail
                     DetailPemesanan::create([
                         'fk_order' => $pemesanan->id,
-                        'fk_produk' => $item['fk_produk'], // Pakai ID Asli
+                        'fk_produk' => $item['product_id'],
                         'qty' => $item['qty'],
                         'harga_satuan_saat_beli' => $item['harga'],
-                        'catatan' => $item['catatan'] . ($item['rasa'] ? ' (' . $item['rasa'] . ')' : '') 
+                        'catatan' => $item['catatan'] . ($item['rasa'] ? ' (' . $item['rasa'] . ')' : '')
                     ]);
                 }
             }
 
-            // 4. Kosongkan Keranjang
             session()->forget('cart');
             
             DB::commit();
-            return redirect()->route('pemesanan.index')->with('success', 'Pesanan berhasil dibuat! Silakan tunggu konfirmasi gerai.');
+            return redirect()->route('pemesanan.user.index', ['username' => Auth::user()->username])->with('success', 'Pesanan berhasil dibuat!');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat checkout: ' . $e->getMessage());
+            if($buktiPath) Storage::disk('public')->delete($buktiPath);
+            
+            return redirect()->back()->with('error', 'Gagal checkout: ' . $e->getMessage());
         }
     }
 }

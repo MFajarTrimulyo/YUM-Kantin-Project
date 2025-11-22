@@ -33,7 +33,7 @@ class AdminSeeder extends Seeder
                 'username'  => 'dummyuser',
                 'email'     => 'dummyuser@yum-kantin.com',
                 'password'  => Hash::make('dummy123'),
-                'role'      => 'user'   
+                'role'      => 'penjual'   
             ],
         ]);
     }

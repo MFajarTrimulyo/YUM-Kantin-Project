@@ -58,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
     // Orders (Riwayat)
-    Route::get('/orders', [PemesananController::class, 'index'])->name('pemesanan.index');
+    Route::get('/{username}/my-order', [PemesananController::class, 'order_user'])->name('pemesanan.user.index');
 
     // Admin Routes
     Route::middleware(['hak.akses:admin'])->prefix('/admin')->group(function () {
@@ -91,16 +91,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/gerai/pending', [GeraiController::class, 'pending'])->name('gerai.pending');
 
     // Penjual Routes
-    Route::middleware(['hak.akses:penjual'])->prefix('/penjual')->group(function () {
-        Route::middleware('has.gerai')->prefix('/penjual')->group(function () {
-            // Produk Routes
-            Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
-            Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
-            Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
-            Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
-            Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
-            Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
-        });
+    Route::middleware(['hak.akses:penjual', 'has.gerai'])->prefix('/penjual')->group(function () {
+        // Produk Routes
+        Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
+        Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
+        Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
+        Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
+        Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
+        Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+
+        // Pemesanan Routes
+        Route::get('/orders', [PemesananController::class, 'index'])->name('penjual.pemesanan.index');
+        Route::patch('/orders/{id}', [PemesananController::class, 'updateStatus'])->name('penjual.pemesanan.update');
     });
 });
 

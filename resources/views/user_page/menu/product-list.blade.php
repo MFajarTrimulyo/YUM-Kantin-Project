@@ -33,9 +33,14 @@
                 {{-- Random Sold Count for Demo, or 0 --}}
                 {{ $product->terjual ?? 0 }}+ Terjual
             </span>
-            <span class="bg-gray-100 px-1.5 rounded text-gray-500 truncate max-w-[50%]">
-                {{ $product->gerai->nama ?? 'Gerai' }}
-            </span>
+            <div class="flex flex-col space-y-0.5">
+                <span class="bg-gray-100 px-1.5 rounded text-gray-500 truncate max-w-[75%]">
+                    {{ $product->gerai->kantin->nama ?? 'Kantin' }}
+                </span>
+                <span class="bg-gray-100 px-1.5 rounded text-gray-500 truncate">
+                    {{ $product->gerai->nama ?? 'Gerai' }}
+                </span>
+            </div>
         </div>
         
         <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 leading-tight group-hover:text-yum-primary transition" title="{{ $product->nama }}">

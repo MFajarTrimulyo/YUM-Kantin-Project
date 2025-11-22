@@ -27,10 +27,14 @@ class UserController extends Controller
                         ->inRandomOrder()
                         ->take(8)
                         ->get();
+                        
+        // 3. All Categories for display
+        $kategoris = Kategori::all();
 
         return view('home', [
             'promoProduks' => $promoProduks,
             'popularProduks' => $popularProduks,
+            'kategoris' => $kategoris,
         ]);
     }
 

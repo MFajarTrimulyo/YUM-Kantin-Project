@@ -41,12 +41,33 @@
         </div>
     </form>
 
-    {{-- Static Categories for Quick Link --}}
+    {{-- Dynamic Categories for Quick Link --}}
     <div class="flex flex-wrap justify-center gap-3 mt-4 px-4">
         <span class="font-bold self-center mr-2 text-gray-600">Kategori:</span>
-        <a href="{{ route('menu.index', ['category' => 'Makanan']) }}" class="bg-blue-50 text-blue-800 px-5 py-1.5 rounded-full text-sm font-bold hover:bg-blue-100 transition">Makanan</a>
-        <a href="{{ route('menu.index', ['category' => 'Minuman']) }}" class="bg-yellow-50 text-yellow-800 px-5 py-1.5 rounded-full text-sm font-bold hover:bg-yellow-100 transition">Minuman</a>
-        <a href="{{ route('menu.index', ['category' => 'Snack']) }}" class="bg-gray-50 border border-gray-200 text-gray-600 px-5 py-1.5 rounded-full text-sm font-bold hover:bg-gray-100 transition">Snack</a>
+        
+        @php
+            // Array warna untuk variasi tombol (akan diulang/cycle jika kategori banyak)
+            $colors = [
+                'bg-blue-50 text-blue-800 border-blue-100 hover:bg-blue-100',
+                'bg-yellow-50 text-yellow-800 border-yellow-100 hover:bg-yellow-100',
+                'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100',
+                'bg-red-50 text-red-800 border-red-100 hover:bg-red-100',
+                'bg-green-50 text-green-800 border-green-100 hover:bg-green-100',
+                'bg-purple-50 text-purple-800 border-purple-100 hover:bg-purple-100',
+            ];
+        @endphp
+
+        @foreach($kategoris as $index => $kategori)
+            @php
+                // Ambil warna berdasarkan urutan index
+                $style = $colors[$index % count($colors)];
+            @endphp
+
+            <a href="{{ route('menu.index', ['category' => $kategori->nama]) }}" 
+            class="{{ $style }} border px-5 py-1.5 rounded-full text-sm font-bold transition">
+                {{ $kategori->nama }}
+            </a>
+        @endforeach
     </div>
 </div>
 
