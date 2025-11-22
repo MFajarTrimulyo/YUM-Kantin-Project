@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gerai;
 use App\Models\Kantin;
 use App\Models\Kategori;
 use App\Models\Produk;
@@ -141,6 +142,7 @@ class UserController extends Controller
         return view('user_page.menu.index', compact('products', 'kategoris', 'currentKantin'));
     }
 
+    // List Kantin
     public function listKantin()
     {
         $kantins = Kantin::withCount('gerais')->get();
@@ -150,5 +152,25 @@ class UserController extends Controller
     public function about()
     {
         return view('about_us');
+    }
+
+    public function show($gerai_slug, $produk_slug)
+    {
+        // 1. Cari Gerai berdasarkan slug
+        $gerai = Gerai::where('slug', $gerai_slug)->firstOrFail();
+
+        // 2. Cari Produk berdasarkan slug DAN milik gerai tersebut
+        $product = Produk::with(['gerai', 'kategori'])
+                    ->where('fk_gerai', $gerai->id)
+                    ->where('slug', $produk_slug)
+                    ->firstOrFail();
+        
+        // 3. Produk Rekomendasi (Logic tetap sama)
+        $relatedProducts = Produk::where('fk_gerai', $product->fk_gerai)
+                            ->where('id', '!=', $product->id)
+                            ->take(4)
+                            ->get();
+                            
+        return view('user_page.menu.show', compact('product', 'relatedProducts'));
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasCustomId;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Gerai extends Model
 {
@@ -15,6 +16,7 @@ class Gerai extends Model
 
     protected $fillable = [
         'id',
+        'slug',
         'photo',
         'fk_user',
         'fk_kantin',
@@ -23,6 +25,14 @@ class Gerai extends Model
         'is_open',
         'is_verified',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::saving(function ($model) {
+            $model->slug = Str::slug($model->nama);
+        });
+    }
 
     public function getCustomIdPrefix(): string
     {

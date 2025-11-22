@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('gerais', function (Blueprint $table) {
             $table->string('id', 20)->primary();
+            $table->string('slug')->unique()->nullable();
             
             $table->string('photo')->nullable();
             // FK Users

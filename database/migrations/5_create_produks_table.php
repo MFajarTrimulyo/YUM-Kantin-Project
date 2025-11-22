@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('produks', function (Blueprint $table) {
             $table->string('id', 20)->primary();
+            $table->string('slug')->unique()->index()->nullable();
     
             // FK Gerai
             $table->string('fk_gerai', 20);

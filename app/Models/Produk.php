@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasCustomId;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Produk extends Model
 {
@@ -15,6 +16,7 @@ class Produk extends Model
 
     protected $fillable = [
         'id',
+        'slug',
         'photo',
         'nama',
         'deskripsi',
@@ -27,6 +29,14 @@ class Produk extends Model
         'terjual'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::saving(function ($model) {
+            $model->slug = Str::slug($model->nama);
+        });
+    }
+    
     public function getCustomIdPrefix(): string
     {
         return 'PRD';

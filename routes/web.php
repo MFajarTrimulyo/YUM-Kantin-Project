@@ -14,10 +14,11 @@ use App\Http\Controllers\AuthController;
 
 Route::redirect('/', 'home');
 
-// Public Routes
+// Public Routes (home, kantins, about)
 Route::get('/home', [UserController::class, 'home'])->name('home');
-Route::get('/menu', [UserController::class, 'menu'])->name('menu.index');
+
 Route::get('/kantins', [UserController::class, 'listKantin'])->name('kantin.list');
+
 Route::get('/about', [UserController::class, 'about'])->name('about');
 
 // Login dan Register Routes
@@ -111,5 +112,8 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+// Public Routes (menu)
+Route::get('/menu', [UserController::class, 'menu'])->name('menu.index');
+Route::get('/{gerai_slug}/{produk_slug}', [UserController::class, 'show'])->name('menu.show');
 
 
