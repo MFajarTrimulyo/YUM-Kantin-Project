@@ -11,7 +11,7 @@
                 Solusi Cerdas <br> <span class="text-yum-yellow">Kantin Kampus</span>
             </h1>
             <p class="text-gray-600 text-lg leading-relaxed mb-8">
-                YUM adalah platform digital yang dirancang khusus untuk mempermudah civitas akademika Universitas Negeri Malang dalam memesan makanan di kantin tanpa antre.
+                YUM adalah platform digital yang dirancang khusus untuk mempermudah civitas akademika Universitas Negeri Malang dalam memesan makanan di kantin tanpa antri.
             </p>
             
             <div class="flex gap-4">
@@ -38,26 +38,70 @@
 <div class="bg-gray-50 py-16">
     <div class="container mx-auto px-6 text-center">
         <h2 class="text-3xl font-bold text-gray-800 mb-12">Tim Pengembang</h2>
-        
-        <div class="max-w-sm mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 transition duration-300">
-            <div class="h-32 bg-yum-primary relative">
-                <div class="absolute -bottom-12 left-0 right-0 flex justify-center">
-                    <div class="w-24 h-24 bg-white p-1 rounded-full shadow-md">
-                        {{-- Inisial Nama --}}
-                        <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500">
-                            M
+        <div class="grid grid-cols-3 gap-6">
+            <!-- Developer Card -->
+            <div class="max-w-sm mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 transition duration-300">
+                <div class="h-32 bg-yum-primary relative">
+                    <div class="absolute -bottom-12 left-0 right-0 flex justify-center">
+                        <div class="w-24 h-24 bg-white p-1 rounded-full shadow-md">
+                            {{-- Inisial Nama --}}
+                            {{-- <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500">
+                                Z
+                            </div> --}}
+                            <img src="{{ asset('pictures/developer/zacky.jpg') }}" class="rounded-full w-full h-full object-cover">
                         </div>
-                        {{-- Jika ada foto: <img src="..." class="rounded-full w-full h-full object-cover"> --}}
                     </div>
                 </div>
+                <div class="pt-16 pb-8 px-6">
+                    <h3 class="text-xl font-bold text-gray-800">Muhammad Kharissah Ibnu Zacky</h3>
+                    <p class="text-yum-primary font-medium text-sm mb-4">Mahasiswa Universitas Negeri Malang</p>
+                    <p class="text-gray-500 text-sm">
+                        S1 Pendidikan Teknik Informatika <br>
+                        Departemen Teknik Elektro dan Informatika
+                    </p>
+                </div>
             </div>
-            <div class="pt-16 pb-8 px-6">
-                <h3 class="text-xl font-bold text-gray-800">Muhammad Fajar</h3>
-                <p class="text-yum-primary font-medium text-sm mb-4">Mahasiswa Universitas Negeri Malang</p>
-                <p class="text-gray-500 text-sm">
-                    S1 Pendidikan Teknik Informatika <br>
-                    Departemen Teknik Elektro dan Informatika
-                </p>
+            <div class="max-w-sm mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 transition duration-300">
+                <div class="h-32 bg-yum-primary relative">
+                    <div class="absolute -bottom-12 left-0 right-0 flex justify-center">
+                        <div class="w-24 h-24 bg-white p-1 rounded-full shadow-md">
+                            {{-- Inisial Nama --}}
+                            {{-- <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500">
+                                M
+                            </div> --}}
+                            <img src="{{ asset('pictures/developer/fajar-web.jpg') }}" class="rounded-full w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-16 pb-8 px-6">
+                    <h3 class="text-xl font-bold text-gray-800">Muhammad Fajar Tri Mulyo</h3>
+                    <p class="text-yum-primary font-medium text-sm mb-4">Mahasiswa Universitas Negeri Malang</p>
+                    <p class="text-gray-500 text-sm">
+                        S1 Pendidikan Teknik Informatika <br>
+                        Departemen Teknik Elektro dan Informatika
+                    </p>
+                </div>
+            </div>
+            <div class="max-w-sm mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 transition duration-300">
+                <div class="h-32 bg-yum-primary relative">
+                    <div class="absolute -bottom-12 left-0 right-0 flex justify-center">
+                        <div class="w-24 h-24 bg-white p-1 rounded-full shadow-md">
+                            {{-- Inisial Nama --}}
+                            <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500">
+                                L
+                            </div>
+                            {{-- Jika ada foto: <img src="..." class="rounded-full w-full h-full object-cover"> --}}
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-16 pb-8 px-6">
+                    <h3 class="text-xl font-bold text-gray-800">Luigy. M. C. Liem Saunoah</h3>
+                    <p class="text-yum-primary font-medium text-sm mb-4">Mahasiswa Universitas Negeri Malang</p>
+                    <p class="text-gray-500 text-sm">
+                        S1 Pendidikan Teknik Informatika <br>
+                        Departemen Teknik Elektro dan Informatika
+                    </p>
+                </div>
             </div>
         </div>
     </div>

@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
         
         DB::table('users')->insert([
             [
-                'id' => 'USR250000',
+                'id' => 'USR0',
                 'photo'     => null,
                 'nama'      => 'Admin YUM',
                 'username'  => 'adminyum',
@@ -31,7 +31,7 @@ class AdminSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 'USR250001',
+                'id' => 'USR1',
                 'photo'     => null,
                 'nama'      => 'Dummy User',
                 'username'  => 'dummyuser',
