@@ -55,13 +55,17 @@ class DetailPemesananController extends Controller
         $totalItemTerjual = $detailQuery->sum('qty');
 
         // 5. Siapkan Data untuk Grafik (Omzet per Hari)
-        $grafikData = $query->select(
+        $grafikData = $query->reorder() 
+        ->select(
             DB::raw('DATE(created_at) as date'), 
             DB::raw('SUM(total_harga) as total')
         )
         ->groupBy('date')
-        ->orderBy('date')
+        ->orderBy('date', 'asc')
         ->get();
+
+        $chartDates = $grafikData->pluck('date'); 
+        $chartTotals = $grafikData->pluck('total');
 
         // Label Sumbu X
         $chartDates = $grafikData->pluck('date')->map(function($date) {
