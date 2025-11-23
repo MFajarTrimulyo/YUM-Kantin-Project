@@ -26,6 +26,11 @@ class DetailPemesananController extends Controller
 
         // 3. Cek Role (Admin vs Penjual)
         if ($user->role == 'penjual') {
+            if (!$user->gerai) {
+                return redirect()->route('gerai.create')
+                    ->with('warning', 'Silakan lengkapi profil Gerai Anda terlebih dahulu sebelum melihat laporan.');
+            }
+
             // Penjual hanya lihat datanya sendiri
             $query->where('fk_gerai', $user->gerai->id);
         }
@@ -43,7 +48,7 @@ class DetailPemesananController extends Controller
                 ->whereDate('created_at', '>=', $startDate)
                 ->whereDate('created_at', '<=', $endDate);
             
-            if ($user->role == 'penjual') {
+            if ($user->role == 'penjual' && $user->gerai) {
                 $q->where('fk_gerai', $user->gerai->id);
             }
         });
