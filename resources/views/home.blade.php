@@ -190,10 +190,48 @@
     {{-- Footer Feedback Section Remains the Same --}}
     <h2 class="text-white text-2xl font-bold mb-8 relative z-10">Berikan <span class="text-yum-yellow">ulasanmu</span> disini!</h2>
     <div class="max-w-2xl mx-auto px-6 relative z-10">
-        <div class="flex gap-3 mb-4">
-            <input type="email" placeholder="Masukkan email kamu" class="flex-1 rounded-lg px-5 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-yum-yellow border-none shadow-lg text-sm">
-            <button class="bg-yum-yellow text-black font-bold px-8 py-3 rounded-lg hover:bg-yellow-300 shadow-lg transition transform hover:-translate-y-0.5">Kirim</button>
-        </div>
-        <textarea class="w-full rounded-lg px-5 py-4 h-32 bg-white focus:outline-none focus:ring-2 focus:ring-yum-yellow border-none shadow-lg text-sm resize-none" placeholder="Tulis kritik dan saran disini..."></textarea>
+        @if(session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 text-sm shadow-md">
+                <strong class="font-bold">Berhasil!</strong>
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        @endif
+
+        <form action="{{ route('ulasan.store') }}" method="POST">
+            @csrf
+            
+            <div class="flex gap-3 mb-4">
+                {{-- Input Email --}}
+                <div class="flex-1">
+                    <input type="email" 
+                        name="email" 
+                        value="{{ Auth::check() ? Auth::user()->email : old('email') }}" 
+                        placeholder="Masukkan email kamu" 
+                        required
+                        class="w-full rounded-lg px-5 py-3 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-yum-yellow border-none shadow-lg text-sm @error('email') ring-2 ring-red-500 @enderror">
+                    
+                    @error('email')
+                        <p class="text-red-200 text-xs mt-1 ml-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Tombol Kirim --}}
+                <button type="submit" class="bg-yum-yellow text-black font-bold px-8 py-3 rounded-lg hover:bg-yellow-300 shadow-lg transition transform hover:-translate-y-0.5 h-fit">
+                    Kirim
+                </button>
+            </div>
+
+            {{-- Textarea Pesan --}}
+            <div>
+                <textarea name="pesan" 
+                        required
+                        class="w-full rounded-lg px-5 py-4 h-32 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-yum-yellow border-none shadow-lg text-sm resize-none @error('pesan') ring-2 ring-red-500 @enderror" 
+                        placeholder="Tulis kritik dan saran disini...">{{ old('pesan') }}</textarea>
+                
+                @error('pesan')
+                    <p class="text-red-200 text-xs mt-1 ml-1">{{ $message }}</p>
+                @enderror
+            </div>
+        </form>
     </div>
 @endsection

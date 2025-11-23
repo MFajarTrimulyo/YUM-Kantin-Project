@@ -29,6 +29,17 @@ Route::middleware('guest')->group(function () {
     
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+    // Lupa Password
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+    
+    // Reset Password
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+    // Ulasan Route
+    Route::post('/ulasan', [App\Http\Controllers\UlasanController::class, 'store'])->name('ulasan.store');
 });
 
 
@@ -111,6 +122,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Penjual Routes
     Route::middleware(['hak.akses:penjual', 'has.gerai'])->prefix('/penjual')->group(function () {
+        
         // Produk Routes
         Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
         Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');

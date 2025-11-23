@@ -47,7 +47,7 @@
         <label class="flex items-center cursor-pointer hover:text-yum-primary">
             <input type="checkbox" name="remember" class="mr-2 rounded text-yum-primary focus:ring-yum-primary"> Remember Me
         </label>
-        <a href="/forgot-password" class="hover:text-yum-primary hover:underline transition">Forgot your Password?</a>
+        <a href="{{ route('password.request') }}" class="hover:text-yum-primary hover:underline transition">Forgot your Password?</a>
     </div>
 
     <button type="submit" class="w-full bg-yum-primary text-white font-bold py-3 hover:bg-blue-700 active:translate-y-0.5 transition duration-200 rounded-sm shadow-md">
