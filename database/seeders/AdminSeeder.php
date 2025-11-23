@@ -16,6 +16,8 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
+        $now = now();
+        
         DB::table('users')->insert([
             [
                 'id' => 'USR250000',
@@ -24,7 +26,9 @@ class AdminSeeder extends Seeder
                 'username'  => 'adminyum',
                 'email'     => 'admin@yum-kantin.com',
                 'password'  => Hash::make('admin123'),
-                'role'      => 'admin'
+                'role'      => 'admin',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'id' => 'USR250001',
@@ -33,7 +37,9 @@ class AdminSeeder extends Seeder
                 'username'  => 'dummyuser',
                 'email'     => 'dummyuser@yum-kantin.com',
                 'password'  => Hash::make('dummy123'),
-                'role'      => 'penjual'   
+                'role'      => 'penjual',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
         ]);
     }

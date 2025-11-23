@@ -110,8 +110,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/rekenings/{id}/edit', [RekeningController::class, 'edit'])->name('admin.rekenings.edit');
         Route::put('/rekenings/{id}', [RekeningController::class, 'update'])->name('admin.rekenings.update');
         Route::delete('/rekenings/{id}', [RekeningController::class, 'destroy'])->name('admin.rekenings.destroy');
+        
         // Route Monitoring Pesanan
         Route::get('/orders', [AdminController::class, 'orders'])->name('admin.pemesanans.index');
+
+        // Manajemen User
+        Route::get('/users', [AdminController::class, 'users'])->name('admin.users.index');
+        Route::patch('/users/{id}/role', [AdminController::class, 'updateUserRole'])->name('admin.users.update');
+        Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.destroy');
     });
 
 

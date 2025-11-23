@@ -111,6 +111,7 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Gerai berhasil dihapus.');
     }
 
+    // 4. Tampilkan Daftar Pesanan dengan Filter
     public function orders(Request $request)
     {
         $query = Pemesanan::with(['user', 'gerai', 'detail_pemesanans.produk'])
@@ -141,5 +142,56 @@ class AdminController extends Controller
         ];
 
         return view('admin_page.data_pemesanans.index', compact('orders', 'gerais', 'status', 'counts', 'geraiId'));
+    }
+
+    // 1. Tampilkan Daftar User
+    public function users(Request $request)
+    {
+        $query = User::query();
+
+        // Fitur Pencarian Sederhana
+        if ($request->has('search')) {
+            $query->where('nama', 'like', '%' . $request->search . '%')
+                  ->orWhere('email', 'like', '%' . $request->search . '%');
+        }
+
+        $users = $query->latest()->paginate(10);
+
+        return view('admin_page.data_users.index', compact('users'));
+    }
+
+    // 2. Update Role User
+    public function updateUserRole(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        
+        // Cegah Admin mengubah role dirinya sendiri (agar tidak terkunci)
+        if ($user->id == Auth::id()) {
+            return redirect()->back()->with('error', 'Anda tidak bisa mengubah role akun sendiri.');
+        }
+
+        $request->validate([
+            'role' => 'required|in:admin,penjual,user'
+        ]);
+
+        $user->update(['role' => $request->role]);
+
+        return redirect()->back()->with('success', 'Role pengguna berhasil diubah menjadi ' . ucfirst($request->role));
+    }
+
+    // 3. Hapus User
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Cegah Admin menghapus dirinya sendiri
+        if ($user->id == Auth::id()) {
+            return redirect()->back()->with('error', 'Anda tidak bisa menghapus akun sendiri.');
+        }
+
+        // Hapus User (Data terkait seperti Gerai/Pesanan akan ikut terhapus jika settingan database ON DELETE CASCADE)
+        $user->delete();
+
+        return redirect()->back()->with('success', 'Pengguna berhasil dihapus.');
     }
 }
