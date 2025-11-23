@@ -48,7 +48,7 @@
                             {{-- <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500">
                                 Z
                             </div> --}}
-                            <img src="{{ asset('pictures/developer/zacky.jpg') }}" class="rounded-full w-full h-full object-cover">
+                            <img src="{{ asset('pictures/developer/zacky-web.jpg') }}" class="rounded-full w-full h-full object-cover">
                         </div>
                     </div>
                 </div>
