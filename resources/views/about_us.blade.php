@@ -48,7 +48,11 @@
                             {{-- <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500">
                                 Z
                             </div> --}}
-                            <img src="{{ asset('pictures/developer/zacky-web.jpg') }}" class="rounded-full w-full h-full object-cover">
+                            
+                            <div class="w-full h-full rounded-full overflow-hidden">
+                                {{-- Added 'transform scale-125' to zoom in --}}
+                                <img src="{{ asset('pictures/developer/zacky-web.jpg') }}" class="w-full h-full object-cover transform scale-200">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -69,7 +73,11 @@
                             {{-- <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500">
                                 M
                             </div> --}}
-                            <img src="{{ asset('pictures/developer/fajar-web.jpg') }}" class="rounded-full w-full h-full object-cover">
+
+                            <div class="w-full h-full rounded-full overflow-hidden">
+                                {{-- Added 'transform scale-125' to zoom in --}}
+                                <img src="{{ asset('pictures/developer/fajar-web.jpg') }}" class="w-full h-full object-cover transform scale-200 object-[center_10%]">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -87,10 +95,14 @@
                     <div class="absolute -bottom-12 left-0 right-0 flex justify-center">
                         <div class="w-24 h-24 bg-white p-1 rounded-full shadow-md">
                             {{-- Inisial Nama --}}
-                            <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500">
+                            {{-- <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500">
                                 L
+                            </div> --}}
+
+                            <div class="w-full h-full rounded-full overflow-hidden">
+                                {{-- Added 'transform scale-125' to zoom in --}}
+                                <img src="{{ asset('pictures/developer/charly-web.jpg') }}" class="w-full h-full object-cover transform scale-200 object-[center_70%]">
                             </div>
-                            {{-- Jika ada foto: <img src="..." class="rounded-full w-full h-full object-cover"> --}}
                         </div>
                     </div>
                 </div>
