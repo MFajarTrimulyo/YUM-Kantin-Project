@@ -24,8 +24,11 @@
     </div>
 
     <div class="flex h-screen overflow-hidden">
+
+        <div id="mobile-overlay" class="fixed inset-0 z-20 bg-black opacity-50 transition-opacity lg:hidden hidden" onclick="toggleSidebar()"></div>
+        
         <!-- SIDEBAR -->
-        <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col z-10">
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col">
             
             <!-- Logo Area -->
             <div class="h-16 flex items-center justify-center border-b border-gray-100">
@@ -42,7 +45,7 @@
             </div>
 
             <!-- Navigation Links -->
-            <nav class="flex-1 overflow-y-auto py-4">
+            <nav class="flex-1 overflow-y-auto py-4 no-scrollbar">
                 <ul class="space-y-1 px-3">
                     
                     @if (Auth::user()->role == 'penjual' || Auth::user()->role == 'admin')
@@ -204,7 +207,7 @@
             <!-- Top Header -->
             <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 md:px-8">
                 <!-- Mobile Menu Button -->
-                <button class="md:hidden text-gray-500 hover:text-yum-primary">
+                <button onclick="toggleSidebar()" class="lg:hidden text-gray-500 hover:text-yum-primary focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
 
@@ -242,5 +245,22 @@
             
         </div>
     </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                // Open Sidebar
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                // Close Sidebar
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+    </script>
 </body>
 </html>

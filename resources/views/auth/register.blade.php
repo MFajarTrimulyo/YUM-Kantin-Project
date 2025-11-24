@@ -6,7 +6,7 @@
     @csrf
     
     <div class="mb-5">
-        <input type="text" name="nama" placeholder="Full Name" 
+        <input type="text" name="nama" placeholder="Full Name" value="{{ old('nama') }}"
                 class="w-full border border-gray-300 bg-gray-50 px-4 py-3 focus:outline-none focus:border-yum-primary focus:ring-1 focus:ring-yum-primary placeholder-gray-400 text-sm transition-colors">
         @error('nama')
             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -15,7 +15,7 @@
     
 
     <div class="mb-5">
-        <input type="text" name="username" placeholder="Username" 
+        <input type="text" name="username" placeholder="Username" value="{{ old('username') }}"
                 class="w-full border border-gray-300 bg-gray-50 px-4 py-3 focus:outline-none focus:border-yum-primary focus:ring-1 focus:ring-yum-primary placeholder-gray-400 text-sm transition-colors">
         @error('username')
             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="mb-5">
-        <input type="email" name="email" placeholder="Email" 
+        <input type="email" name="email" placeholder="Email" value="{{ old('email') }}"
                 class="w-full border border-gray-300 bg-gray-50 px-4 py-3 focus:outline-none focus:border-yum-primary focus:ring-1 focus:ring-yum-primary placeholder-gray-400 text-sm transition-colors">
         @error('email')
             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
