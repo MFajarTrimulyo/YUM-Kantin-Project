@@ -140,6 +140,8 @@ Route::middleware(['auth'])->group(function () {
         // Pemesanan Routes
         Route::get('/orders', [PemesananController::class, 'index'])->name('penjual.pemesanan.index');
         Route::patch('/orders/{id}', [PemesananController::class, 'updateStatus'])->name('penjual.pemesanan.update');
+        Route::delete('/orders/{id}', [PemesananController::class, 'destroy'])->name('penjual.pemesanan.destroy');
+
     });
 });
 

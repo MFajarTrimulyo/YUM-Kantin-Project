@@ -100,6 +100,30 @@ class PemesananController extends Controller
         }
     }
 
+    public function destroy($id)
+    {
+        // 1. Cari Pesanan
+        $order = Pemesanan::where('id', $id)
+                    ->where('fk_gerai', Auth::user()->gerai->id)
+                    ->firstOrFail();
+
+        // 2. Hanya boleh hapus jika status 'completed' atau 'cancelled'
+        if (!in_array($order->status, ['completed', 'cancelled'])) {
+            return redirect()->back()->with('error', 'Pesanan yang sedang aktif tidak dapat dihapus!');
+        }
+
+        // 3. Hapus Data
+        try {
+            $order->delete();
+
+            return redirect()->back()->with('success', 'Riwayat pesanan berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+        }
+    }
+
+
+
     // Menampilkan daftar pesanan untuk user
     public function order_user()
     {
