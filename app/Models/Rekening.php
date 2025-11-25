@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasCustomId;
 use Illuminate\Database\Eloquent\Model;
 
 class Rekening extends Model
 {
+    use HasCustomId;
+    
     protected $table = 'rekenings';
     protected $primaryKey = 'id';
     public $incrementing = false;
