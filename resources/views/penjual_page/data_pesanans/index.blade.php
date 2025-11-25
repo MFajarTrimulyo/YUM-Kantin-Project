@@ -57,7 +57,7 @@
                                 {{ $order->status_bayar == 'paid' ? 'LUNAS' : 'BELUM BAYAR' }}
                             </div>
 
-                            {{-- TOMBOL LIHAT BUKTI --}}
+                            {{-- Tombol Lihat Bukti --}}
                             @if($order->bukti_bayar)
                                 <button onclick="showBukti('{{ asset('storage/' . $order->bukti_bayar) }}')" 
                                     class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded border border-blue-100 hover:bg-blue-100 transition flex items-center gap-1 cursor-pointer">
@@ -136,7 +136,7 @@
                                 {{ $order->status == 'completed' ? 'Pesanan Selesai' : 'Pesanan Dibatalkan' }}
                             </div>
 
-                            {{-- DELETE BUTTON --}}
+                            {{-- Delete Button --}}
                             <form action="{{ route('penjual.pemesanan.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus riwayat pesanan ini? Data tidak bisa dikembalikan.')">
                                 @csrf
                                 @method('DELETE')
@@ -147,7 +147,6 @@
                                 </button>
                             </form>
                     @endif
-
                 </div>
             </div>
             @endforeach
@@ -166,5 +165,4 @@
 
 {{-- MODAL BUKTI PEMBAYARAN --}}
 @include('penjual_page.data_pesanans.modal_bukti_bayar')
-
 @endsection

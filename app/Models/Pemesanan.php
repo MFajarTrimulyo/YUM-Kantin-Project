@@ -36,6 +36,7 @@ class Pemesanan extends Model
         return $this->hasMany(DetailPemesanan::class, 'fk_order');
     }
 
+    // Relasi dari User
     public function user() {
         return $this->belongsTo(User::class, 'fk_user');
     }

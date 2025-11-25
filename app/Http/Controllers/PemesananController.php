@@ -12,16 +12,17 @@ class PemesananController extends Controller
     // Menampilkan daftar pesanan untuk penjual dengan tab filtering
     public function index(Request $request)
     {
+        // Mengambil ID Gerai
         $geraiId = Auth::user()->gerai->id;
         
-        // Default tab: 'pending'
+        // Query Status
         $status = $request->query('status', 'pending');
 
-        // Query Dasar
+        // Query Mengambil Data Pemesanan Berdasarkan Gerai
         $query = Pemesanan::where('fk_gerai', $geraiId)
-                    ->with(['user', 'detail_pemesanans.produk']); // Eager Load
+                    ->with(['user', 'detail_pemesanans.produk']);
 
-        // Filter berdasarkan Tab
+        // Filter berdasarkan Tab Status
         if ($status == 'history') {
             $query->whereIn('status', ['completed', 'cancelled']);
         } else {
@@ -58,7 +59,7 @@ class PemesananController extends Controller
 
         DB::beginTransaction();
         try {
-            // LOGIC PENGEMBALIAN STOK (RESTOCK)
+            // Logika Restock
             // Jika status berubah JADI 'cancelled' DAN sebelumnya BUKAN 'cancelled'
             if ($newStatus == 'cancelled' && $oldStatus != 'cancelled') {
                 
@@ -82,7 +83,7 @@ class PemesananController extends Controller
 
             DB::commit();
 
-            // Redirect logic
+            // Redirect
             $redirectStatus = match($newStatus) {
                 'cooking' => 'pending',
                 'ready' => 'cooking',
@@ -100,6 +101,7 @@ class PemesananController extends Controller
         }
     }
 
+    // Hapus Data Pemesanan
     public function destroy($id)
     {
         // 1. Cari Pesanan
