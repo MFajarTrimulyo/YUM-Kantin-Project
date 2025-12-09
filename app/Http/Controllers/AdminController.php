@@ -8,6 +8,7 @@ use App\Models\Produk;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -144,7 +145,52 @@ class AdminController extends Controller
         return view('admin_page.data_pemesanans.index', compact('orders', 'gerais', 'status', 'counts', 'geraiId'));
     }
 
-    // 1. Tampilkan Daftar User
+    public function updatePemesanans(Request $request, $id)
+    {
+        // 1. Validasi Input
+        $request->validate([
+            'status' => 'required|in:pending,cooking,ready,completed,cancelled'
+        ]);
+
+        // 2. Cari Pesanan beserta detail produknya
+        $order = Pemesanan::with('detail_pemesanans.produk')->findOrFail($id);
+
+        // Gunakan Transaction agar aman (jika error, semua batal)
+        DB::beginTransaction();
+        try {
+            
+            // LOGIKA PENGEMBALIAN STOK (Jika Admin membatalkan)
+            // Cek: Jika status baru adalah 'cancelled' DAN status lama BUKAN 'cancelled'
+            if ($request->status == 'cancelled' && $order->status != 'cancelled') {
+                
+                foreach ($order->detail_pemesanans as $detail) {
+                    if ($detail->produk) {
+                        // Kembalikan Stok Produk
+                        $detail->produk->increment('stok', $detail->qty);
+                        
+                        // Opsional: Jika kamu mencatat 'terjual', kurangi angkanya
+                        if ($detail->produk->terjual >= $detail->qty) {
+                            $detail->produk->decrement('terjual', $detail->qty);
+                        }
+                    }
+                }
+            }
+
+            // 3. Update Status Pesanan
+            $order->update([
+                'status' => $request->status
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    // Tampilkan Daftar User
     public function users(Request $request)
     {
         $query = User::query();

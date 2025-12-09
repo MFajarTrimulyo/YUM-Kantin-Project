@@ -147,7 +147,7 @@
                                 </a>
 
                                 {{-- TOMBOL BATALKAN (Opsional: Hanya muncul jika status pending/cooking) --}}
-                                {{-- @if($order->status == 'pending' || $order->status == 'cooking')
+                                @if($order->status == 'pending' || $order->status == 'cooking')
                                     <form action="{{ route('admin.pemesanans.update', $order->id) }}" method="POST" onsubmit="return confirm('Admin: Batalkan pesanan ini secara paksa?')">
                                         @csrf @method('PATCH')
                                         <input type="hidden" name="status" value="cancelled">
@@ -155,7 +155,7 @@
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                                         </button>
                                     </form>
-                                @endif --}}
+                                @endif
                             </div>
                         </td>
 

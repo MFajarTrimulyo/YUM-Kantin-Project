@@ -117,6 +117,9 @@ Route::middleware(['auth'])->group(function () {
         // Route Monitoring Pesanan
         Route::get('/orders', [AdminController::class, 'orders'])->name('admin.pemesanans.index');
 
+        // Route untuk update status (termasuk cancel)
+        Route::patch('/pemesanans/{id}', [AdminController::class, 'updatePemesanans'])->name('admin.pemesanans.update');
+
         // Manajemen User
         Route::get('/users', [AdminController::class, 'users'])->name('admin.users.index');
         Route::patch('/users/{id}/role', [AdminController::class, 'updateUserRole'])->name('admin.users.update');
