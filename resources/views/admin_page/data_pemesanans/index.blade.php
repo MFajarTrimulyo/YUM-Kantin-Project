@@ -103,7 +103,6 @@
                         {{-- Total & Bukti --}}
                         <td class="px-6 py-4">
                             <div class="font-bold text-gray-800">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</div>
-                            
                             @if($order->bukti_bayar)
                                 <button onclick="showBukti('{{ asset('storage/' . $order->bukti_bayar) }}')" class="mt-1 text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded border border-blue-100 hover:bg-blue-100 flex items-center gap-1 w-fit">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -130,20 +129,35 @@
                             </span>
                         </td>
 
-                        {{-- Aksi Admin (Override) --}}
-                        {{-- <td class="px-6 py-4 text-center">
-                            @if($order->status == 'pending' || $order->status == 'cooking')
-                                <form action="{{ route('admin.pemesanans.update', $order->id) }}" method="POST" onsubmit="return confirm('Admin: Batalkan pesanan ini secara paksa?')">
-                                    @csrf @method('PATCH')
-                                    <input type="hidden" name="status" value="cancelled">
-                                    <button type="submit" class="text-red-500 hover:text-red-700 text-xs font-bold underline">
-                                        Batalkan
-                                    </button>
-                                </form>
-                            @else
-                                <span class="text-gray-300 text-xs">-</span>
-                            @endif
-                        </td> --}}
+                        <td class="px-6 py-4 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                
+                                {{-- TOMBOL CETAK STRUK --}}
+                                <a href="{{ route('struk.show', $order->id) }}" target="_blank" 
+                                class="group relative flex items-center justify-center p-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition border border-transparent hover:border-blue-200" 
+                                title="Cetak Struk">
+                                    
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                    </svg>
+                                    
+                                    <span class="absolute bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-[10px] px-2 py-1 rounded whitespace-nowrap z-10">
+                                        Cetak Struk
+                                    </span>
+                                </a>
+
+                                {{-- TOMBOL BATALKAN (Opsional: Hanya muncul jika status pending/cooking) --}}
+                                {{-- @if($order->status == 'pending' || $order->status == 'cooking')
+                                    <form action="{{ route('admin.pemesanans.update', $order->id) }}" method="POST" onsubmit="return confirm('Admin: Batalkan pesanan ini secara paksa?')">
+                                        @csrf @method('PATCH')
+                                        <input type="hidden" name="status" value="cancelled">
+                                        <button type="submit" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Batalkan Paksa">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
+                                    </form>
+                                @endif --}}
+                            </div>
+                        </td>
 
                     </tr>
                     @empty

@@ -9,6 +9,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\RekeningController;
+use App\Http\Controllers\StrukController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
@@ -79,6 +80,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/{username}/my-order', [PemesananController::class, 'order_user'])->name('pemesanan.user.index');
     Route::patch('/{username}/my-order/cancel', [PemesananController::class, 'cancelByUser'])->name('pemesanan.user.cancel');
 
+    // Cetak Struk
+    Route::get('/struk/{id}', [StrukController::class, 'show'])->name('struk.show');
 
     // Admin Routes
     Route::middleware(['hak.akses:admin'])->prefix('/admin')->group(function () {
