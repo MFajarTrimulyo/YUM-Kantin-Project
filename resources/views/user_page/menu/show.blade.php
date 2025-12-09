@@ -39,6 +39,9 @@
             <div class="md:w-1/2 p-8 md:p-10 flex flex-col">
                 
                 {{-- Info Toko Kecil --}}
+                @php
+                    $isStoreOpen = $product->gerai->is_open ?? true;
+                @endphp
                 <div class="flex items-center gap-3 mb-6 p-3 bg-gray-50 rounded-xl w-fit">
                     <div class="w-8 h-8 rounded-full bg-yum-primary/20 flex items-center justify-center text-yum-primary font-bold">
                         @if($product->gerai->photo)
@@ -47,9 +50,28 @@
                             {{ strtoupper(substr($product->gerai->nama, 0, 1)) }}
                         @endif
                     </div>
-                    <a href="#" class="text-sm font-bold text-gray-700 hover:text-yum-primary transition">
-                        {{ $product->gerai->nama ?? 'Nama Kantin' }}
-                    </a>
+                    {{-- NAMA & STATUS --}}
+                    <div class="flex flex-col">
+                        <a href="#" class="text-sm font-bold transition {{ $isStoreOpen ? 'text-gray-700 hover:text-yum-primary' : 'text-gray-500 cursor-not-allowed' }}">
+                            {{ $product->gerai->nama ?? 'Nama Kantin' }}
+                        </a>
+
+                        {{-- Indikator Status --}}
+                        @if($isStoreOpen)
+                            <div class="flex items-center gap-1">
+                                <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                </span>
+                                <span class="text-[10px] font-bold text-green-600 uppercase tracking-wide">Buka</span>
+                            </div>
+                        @else
+                            <div class="flex items-center gap-1">
+                                <span class="h-2 w-2 rounded-full bg-red-500"></span>
+                                <span class="text-[10px] font-bold text-red-500 uppercase tracking-wide">Sedang Tutup</span>
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
                 {{-- Judul Produk --}}
@@ -135,25 +157,40 @@
                         </div>
 
                         <div class="flex gap-4">
-                            <button type="submit" 
-                                    name="action" 
-                                    value="checkout" 
-                                    class="flex-1 bg-blue-600 text-white font-bold text-lg py-4 px-6 rounded-full hover:bg-blue-700 transition transform hover:-translate-y-1 shadow-md text-center flex items-center justify-center gap-2">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                Pesan Sekarang
-                            </button>
+                            @if($isStoreOpen && $product->stok > 0)
+                                {{-- JIKA BUKA: Tombol Normal --}}
+                                <button type="submit" name="action" value="checkout" class="flex-1 bg-blue-600 text-white font-bold text-lg py-4 px-6 rounded-full hover:bg-blue-700 transition transform hover:-translate-y-1 shadow-md flex items-center justify-center gap-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    Pesan Sekarang
+                                </button>
 
-                            {{-- Tombol Masuk Keranjang --}}
-                            <button type="submit" class="flex-1 bg-yum-primary text-white font-bold text-lg py-4 px-6 rounded-full hover:bg-yum-dark transition transform hover:-translate-y-1 shadow-md flex items-center justify-center gap-2">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                                + Keranjang
-                            </button>
-                        </div>
-                            @if($product->stok <= 0)
-                                <p class="text-red-500 text-sm mt-3 text-center font-bold">Maaf, Stok Habis!</p>
+                                <button type="submit" name="action" value="add" class="flex-1 bg-yum-primary text-white font-bold text-lg py-4 px-6 rounded-full hover:bg-yum-dark transition transform hover:-translate-y-1 shadow-md flex items-center justify-center gap-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                    + Keranjang
+                                </button>
                             @else
-                                <p class="text-gray-500 text-sm mt-3 text-center">Sisa stok: {{ $product->stok }}</p>
+                                {{-- JIKA TUTUP atau STOK HABIS --}}
+                                <button type="button" disabled class="flex-1 bg-gray-300 text-gray-500 font-bold text-lg py-4 px-6 rounded-full cursor-not-allowed flex items-center justify-center gap-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    Pesan Sekarang
+                                </button>
+
+                                <button type="button" disabled class="flex-1 bg-gray-300 text-gray-500 font-bold text-lg py-4 px-6 rounded-full cursor-not-allowed flex items-center justify-center gap-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                    + Keranjang
+                                </button>
                             @endif
+                        </div>
+                        @if(!$isStoreOpen)
+                            <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-3 text-center">
+                                <p class="text-red-600 font-bold">Gerai Sedang Tutup</p>
+                                <p class="text-red-500 text-xs">Silakan pesan saat gerai sudah buka kembali.</p>
+                            </div>
+                        @elseif($product->stok <= 0)
+                            <p class="text-red-500 text-sm mt-3 text-center font-bold">Maaf, Stok Habis!</p>
+                        @else
+                            <p class="text-gray-500 text-sm mt-3 text-center">Sisa stok: {{ $product->stok }}</p>
+                        @endif
                     </div>
                 </form>
             </div>
@@ -188,16 +225,12 @@
         }
     }
     
-    // Disable tombol jika stok habis
-    @if($product->stok <= 0)
+    // Disable inputs jika tutup atau stok habis
+    @if($product->stok <= 0 || !$isStoreOpen)
         document.addEventListener("DOMContentLoaded", function() {
-            const buttons = document.querySelectorAll('form button[type="submit"], form button[onclick]');
-            buttons.forEach(btn => {
-                btn.disabled = true;
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
-                btn.classList.remove('hover:bg-blue-700', 'hover:bg-yum-dark', 'hover:-translate-y-1');
-            });
-             qtyInput.value = 0;
+            qtyInput.value = 0;
+            // Input field juga didisable
+            qtyInput.disabled = true;
         });
     @endif
 </script>
