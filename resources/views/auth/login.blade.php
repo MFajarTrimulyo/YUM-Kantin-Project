@@ -21,7 +21,7 @@
     @csrf
     
     <div class="mb-5">
-        <input type="text" name="login" placeholder="Username/Email" 
+        <input type="text" name="login" placeholder="Username/Email" value="{{ old('login') }}"
                 class="w-full border border-gray-300 bg-gray-50 px-4 py-3 focus:outline-none focus:border-yum-primary focus:ring-1 focus:ring-yum-primary placeholder-gray-400 text-sm transition-colors">
     </div>
     

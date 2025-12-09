@@ -24,9 +24,9 @@ class GeraiController extends Controller
         $user = Auth::user();
         
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama' => 'required|string|max:255|unique:gerais,nama',
             'fk_kantin' => 'required|exists:kantins,id',
-            'deskripsi' => 'nullable|string',
+            'deskripsi' => 'nullable|string|required',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 

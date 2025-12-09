@@ -30,7 +30,19 @@ class Gerai extends Model
     {
         parent::boot();
         static::saving(function ($model) {
-            $model->slug = Str::slug($model->nama);
+            $kantin = Kantin::find($model->fk_kantin);
+            $namaKantin = $kantin ? $kantin->nama_kantin : '';
+
+            $originalSlug = Str::slug($model->nama . ' ' . $namaKantin);
+            $slug = $originalSlug;
+            $count = 1;
+
+            while (static::where('slug', $slug)->where('id', '!=', $model->id)->exists()) {
+                $slug = $originalSlug . '-' . $count;
+                $count++;
+            }
+
+            $model->slug = $slug;
         });
     }
 
