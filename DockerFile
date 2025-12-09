@@ -1,0 +1,52 @@
+# Gunakan image PHP resmi dengan Apache
+FROM php:8.2-apache
+
+# Install dependency sistem yang dibutuhkan Laravel & Node.js
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    nodejs \
+    npm
+
+# Bersihkan cache apt agar image lebih kecil
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install Ekstensi PHP yang wajib
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Aktifkan mod_rewrite Apache (biar URL cantik Laravel jalan)
+RUN a2enmod rewrite
+
+# Set Document Root ke folder public Laravel
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set folder kerja
+WORKDIR /var/www/html
+
+# Copy semua file project ke dalam container
+COPY . .
+
+# Install Library PHP (Composer)
+RUN composer install --no-dev --optimize-autoloader
+
+# Install Library JS & Build CSS (Tailwind)
+RUN npm install && npm run build
+
+# Atur hak akses permission folder storage (PENTING)
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Buka Port 80 (Standar Railway untuk Docker)
+EXPOSE 80
+
+# Jalankan Apache saat container nyala
+CMD ["apache2-foreground"]
